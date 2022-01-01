@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import connectDB from './config/dbConnect.js';
+import createUser from './api/controllers/createUser.js';
 
 // ****** Basic Setup *******
 const app = express();
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 8000;
 
 connectDB();
 
+// ****** Routes *******
 app.get('/ping', (req, res) => {
   res.status(200);
   res.end('Server is running and can respond to requests!');
