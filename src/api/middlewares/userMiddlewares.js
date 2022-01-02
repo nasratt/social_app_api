@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+
 import User from '../models/user.model.js';
 import { signupSchema } from '../validations/authValidation.js';
 
@@ -36,4 +38,15 @@ const checkDuplicateEmail = (req, res, next) => {
   });
 };
 
-export { checkDuplicateEmail, validateSignupBody };
+const verifyDecodeJWT = async (req, res, next) => {
+  const token = req.query.secret;
+  try {
+    const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+    req.body.id = decodedToken.id;
+    next();
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export { checkDuplicateEmail, validateSignupBody, verifyDecodeJWT };
