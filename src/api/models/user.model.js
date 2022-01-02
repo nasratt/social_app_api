@@ -6,7 +6,7 @@ const userSchema = new Schema(
     fname: String,
     lname: String,
     email: String,
-    pass_hash: String,
+    hash: String,
     profile_pic: { type: String, default: '' },
     verified: { type: Boolean, default: false },
     friends: { type: [ObjectId], default: [] },
@@ -14,7 +14,7 @@ const userSchema = new Schema(
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
   },
-  { minimize: false, collection: 'user' }
+  { minimize: false, collection: 'users' }
 );
 
 const User = mongoose.model('user', userSchema);

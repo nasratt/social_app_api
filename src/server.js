@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import connectDB from './config/dbConnect.js';
-import createUser from './api/controllers/createUser.js';
+import userRouter from './api/routes/user.route.js';
 
 // ****** Basic Setup *******
 const app = express();
@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 8000;
 connectDB();
 
 // ****** Routes *******
+app.use('/users', userRouter);
 app.get('/ping', (req, res) => {
   res.status(200);
   res.end('Server is running and can respond to requests!');
