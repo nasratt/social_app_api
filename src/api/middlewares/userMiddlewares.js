@@ -49,4 +49,11 @@ const verifyDecodeJWT = async (req, res, next) => {
   }
 };
 
-export { checkDuplicateEmail, validateSignupBody, verifyDecodeJWT };
+const verifyLoginCredentials = (req, res, next) => {};
+
+export {
+  checkDuplicateEmail,
+  validateSignupBody,
+  verifyDecodeJWT,
+  verifyLoginCredentials
+};

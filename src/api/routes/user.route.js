@@ -1,25 +1,21 @@
 import express from 'express';
 
-import { signup } from '../controllers/user.controller.js';
+import {
+  signup,
+  verifyEmail,
+  logUserIn
+} from '../controllers/user.controller.js';
 import {
   checkDuplicateEmail,
   validateSignupBody,
-  verifyDecodeJWT
+  verifyDecodeJWT,
+  verifyLoginCredentials
 } from '../middlewares/userMiddlewares.js';
-import verifyUserEmail from '../services/verifyUserEmail.js';
 
 const userRouter = express.Router();
 
 userRouter.post('/signup', [validateSignupBody, checkDuplicateEmail], signup);
-userRouter.get('/verify_email', verifyDecodeJWT, async (req, res) => {
-  try {
-    await verifyUserEmail(req.body.id);
-    res
-      .status(200)
-      .json({ success: true, message: 'your email was verified successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
+userRouter.get('/verify_email', verifyDecodeJWT, verifyEmail);
+userRouter.post('/login', verifyLoginCredentials, logUserIn);
 
 export default userRouter;

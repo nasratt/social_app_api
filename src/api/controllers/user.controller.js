@@ -18,7 +18,7 @@ const signup = async (req, res) => {
 
     const resNewUser = await newUser.save();
 
-    const vEmail = sendVerificationEmail(
+    const vEmail = await sendVerificationEmail(
       'Socail App API',
       'Email verification',
       resNewUser
@@ -35,4 +35,17 @@ const signup = async (req, res) => {
   }
 };
 
-export { signup };
+const verifyEmail = async (req, res) => {
+  try {
+    await verifyUserEmail(req.body.id);
+    res
+      .status(200)
+      .json({ success: true, message: 'your email was verified successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+const logUserIn = (req, res) => {};
+
+export { signup, verifyEmail, logUserIn };
