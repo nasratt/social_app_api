@@ -2,7 +2,10 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/user.model.js';
 import doesCredentialsMatch from '../services/matchLoginCredentials.js';
-import { signupSchema } from '../validations/authValidation.js';
+import {
+  signupSchema,
+  resetPassSchema
+} from '../validations/authValidation.js';
 
 const validateSignupBody = (req, res, next) => {
   const result = signupSchema.validate(req.body);
@@ -92,10 +95,31 @@ const verifyLoginCredentials = async (req, res, next) => {
   next();
 };
 
+const validateResetPassword = async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const result = resetPassSchema.validate(req.body);
+
+    if (result.error) throw new Error(result.error.details[0].message);
+
+    const user = await User.findOne({ email }).exec();
+    if (!user) throw new Error('invalid email provided');
+
+    if (!user.verified)
+      throw new Error('email is not verified, cannot reset password');
+    req.body.id = user._id;
+
+    next();
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
 export {
   checkDuplicateEmail,
   validateSignupBody,
   verifyDecodeJWT,
   verifyLoginCredentials,
-  verifyDecodeBearerToken
+  verifyDecodeBearerToken,
+  validateResetPassword
 };

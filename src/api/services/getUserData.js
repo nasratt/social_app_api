@@ -16,9 +16,8 @@ const getUserData = async (id, tokenId) => {
     } else {
       return {
         success: true,
-        _id: user._id,
-        fname: user.fname,
-        lname: user.lname
+        message: 'user data was successfully fetched',
+        user: { _id: user._id, fname: user.fname, lname: user.lname }
       };
     }
   } catch (err) {

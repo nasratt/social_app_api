@@ -5,8 +5,9 @@ import User from '../models/user.model.js';
 import sendVerificationEmail from '../services/sendVerificationEmail.js';
 import verifyUserEmail from '../services/verifyUserEmail.js';
 import getUserData from '../services/getUserData.js';
+import updateUserData from '../services/updateUserData.js';
 
-const signup = async (req, res) => {
+const signupUser = async (req, res) => {
   const { fname, lname, email, password } = req.body;
 
   try {
@@ -49,7 +50,7 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-const logUserIn = (req, res) => {
+const loginUser = (req, res) => {
   const {
     user: { email, _id: id, fname, lname }
   } = req.body;
@@ -77,4 +78,44 @@ const sendUserData = async (req, res) => {
   }
 };
 
-export { signup, verifyEmail, logUserIn, sendUserData };
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { tokenData, ...userNewData } = req.body;
+
+  if (id !== tokenData.id) {
+    res
+      .status(401)
+      .json({ success: false, message: 'you can only update your own data' });
+  }
+  try {
+    const result = await updateUserData(id, userNewData);
+    if (!result.success) throw new Error(result);
+    res.status(200).json(result);
+  } catch (err) {}
+};
+
+const findUsers = (req, res) => {};
+
+const resetPassword = async (req, res) => {
+  console.log(req.body, 'req body');
+  const { id, password } = req.body;
+  try {
+    const result = await updateUserData(id, { password });
+    if (!result.success) throw new Error(result);
+    res
+      .status(200)
+      .json({ success: true, message: 'password was successfully reset' });
+  } catch (err) {
+    res.status(500).json({ success: true, message: err.message });
+  }
+};
+
+export {
+  signupUser,
+  verifyEmail,
+  loginUser,
+  sendUserData,
+  updateUser,
+  findUsers,
+  resetPassword
+};
