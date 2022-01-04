@@ -1,7 +1,9 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 import User from '../models/user.model.js';
-import sendVerificationEmail from '../helpers/sendVerificationEmail.js';
+import sendVerificationEmail from '../services/sendVerificationEmail.js';
+import verifyUserEmail from '../services/verifyUserEmail.js';
 
 const signup = async (req, res) => {
   const { fname, lname, email, password } = req.body;
@@ -46,6 +48,17 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-const logUserIn = (req, res) => {};
+const logUserIn = (req, res) => {
+  const {
+    user: { email, _id: id, fname, lname }
+  } = req.body;
+  const token = jwt.sign({ id, fname, lname, email }, process.env.JWT_SECRET);
+  res.status(200).json({
+    success: true,
+    message: 'you have successfully logged in',
+    user: { id, fname, lname, email },
+    token
+  });
+};
 
 export { signup, verifyEmail, logUserIn };

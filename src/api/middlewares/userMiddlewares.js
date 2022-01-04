@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import User from '../models/user.model.js';
+import doesCredentialsMatch from '../services/matchLoginCredentials.js';
 import { signupSchema } from '../validations/authValidation.js';
 
 const validateSignupBody = (req, res, next) => {
@@ -18,7 +19,7 @@ const validateSignupBody = (req, res, next) => {
 
 const checkDuplicateEmail = (req, res, next) => {
   const { email } = req.body;
-  User.findOne({ email, verified: true }).exec((err, user) => {
+  User.findOne({ email }).exec((err, user) => {
     if (err) {
       res.status(500).json({
         success: false,
@@ -30,7 +31,7 @@ const checkDuplicateEmail = (req, res, next) => {
     if (user) {
       res.status(400).json({
         success: false,
-        message: 'An account already exists with given email'
+        message: 'someone is already using that email'
       });
       return;
     }
@@ -49,7 +50,24 @@ const verifyDecodeJWT = async (req, res, next) => {
   }
 };
 
-const verifyLoginCredentials = (req, res, next) => {};
+const verifyLoginCredentials = async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    res
+      .status(400)
+      .json({ success: false, message: 'login credentials not provided' });
+
+  const result = await doesCredentialsMatch(email, password);
+
+  if (!result.success) {
+    res.status(400).json({ success: result.success, message: result.message });
+    return;
+  }
+
+  req.body.user = result.user;
+
+  next();
+};
 
 export {
   checkDuplicateEmail,

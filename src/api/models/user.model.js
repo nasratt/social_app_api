@@ -5,7 +5,7 @@ const userSchema = new Schema(
   {
     fname: String,
     lname: String,
-    email: String,
+    email: { type: String, unique: true },
     hash: String,
     profile_pic: { type: String, default: '' },
     verified: { type: Boolean, default: false },
