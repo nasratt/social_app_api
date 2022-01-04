@@ -97,16 +97,16 @@ const updateUser = async (req, res) => {
 const findUsers = (req, res) => {};
 
 const resetPassword = async (req, res) => {
-  console.log(req.body, 'req body');
   const { id, password } = req.body;
   try {
     const result = await updateUserData(id, { password });
+    console.log(result);
     if (!result.success) throw new Error(result);
     res
       .status(200)
       .json({ success: true, message: 'password was successfully reset' });
   } catch (err) {
-    res.status(500).json({ success: true, message: err.message });
+    res.status(500).json(err);
   }
 };
 

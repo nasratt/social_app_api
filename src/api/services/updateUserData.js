@@ -4,16 +4,16 @@ import User from '../models/user.model.js';
 
 const updateUserData = async (id, userObj) => {
   try {
+    let hash;
     const user = await User.findOne({ _id: id }).exec();
     if (!user) throw new Error('user does not exist');
 
+    if (userObj.hasOwnProperty('password'))
+      hash = await bcrypt.hash(userObj.password, 8);
     Object.keys(userObj).forEach((key) => {
       if (userObj[key]) {
         if (key === 'password') {
-          bcrypt.hash(userObj[key], 8, (err, hash) => {
-            if (err) throw err;
-            user.hash = hash;
-          });
+          user.hash = hash;
         } else user[key] = userObj[key];
       }
     });
