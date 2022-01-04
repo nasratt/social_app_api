@@ -50,6 +50,29 @@ const verifyDecodeJWT = async (req, res, next) => {
   }
 };
 
+const verifyDecodeBearerToken = async (req, res, next) => {
+  const { authorization } = req.headers;
+  if (!authorization) {
+    res.status(400).json({ success: false, message: 'no token provided' });
+    return;
+  }
+
+  try {
+    const [_, token] = authorization.split(' ');
+
+    const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+    if (!decodedToken)
+      throw new Error({ type: invalid, message: 'invalid token provided' });
+
+    req.body.tokenData = decodedToken;
+    next();
+  } catch (err) {
+    if (err.type === 'invalid') res.status(400);
+    else res.status(500);
+    res.json({ success: false, message: err.message });
+  }
+};
+
 const verifyLoginCredentials = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password)
@@ -73,5 +96,6 @@ export {
   checkDuplicateEmail,
   validateSignupBody,
   verifyDecodeJWT,
-  verifyLoginCredentials
+  verifyLoginCredentials,
+  verifyDecodeBearerToken
 };

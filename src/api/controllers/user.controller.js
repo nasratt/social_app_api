@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import sendVerificationEmail from '../services/sendVerificationEmail.js';
 import verifyUserEmail from '../services/verifyUserEmail.js';
+import getUserData from '../services/getUserData.js';
 
 const signup = async (req, res) => {
   const { fname, lname, email, password } = req.body;
@@ -61,4 +62,19 @@ const logUserIn = (req, res) => {
   });
 };
 
-export { signup, verifyEmail, logUserIn };
+const sendUserData = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!id) throw new Error('no id provided');
+
+    const result = await getUserData(id, req.body.tokenData.id);
+    if (!result.success) throw new Error(result.message);
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export { signup, verifyEmail, logUserIn, sendUserData };
