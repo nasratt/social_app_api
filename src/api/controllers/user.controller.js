@@ -100,7 +100,7 @@ const resetPassword = async (req, res) => {
   const { id, password } = req.body;
   try {
     const result = await updateUserData(id, { password });
-    console.log(result);
+
     if (!result.success) throw new Error(result);
     res
       .status(200)

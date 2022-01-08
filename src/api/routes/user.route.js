@@ -16,7 +16,7 @@ import {
   verifyLoginCredentials,
   verifyDecodeBearerToken,
   validateResetPassword
-} from '../middlewares/userMiddlewares.js';
+} from '../middlewares/user.middleware.js';
 
 const userRouter = express.Router();
 

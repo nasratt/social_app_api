@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import User from '../models/user.model.js';
-import doesCredentialsMatch from '../services/matchLoginCredentials.js';
+import doesCredentialsMatch from '../services/verifyLoginCredentials.js';
 import {
   signupSchema,
   resetPassSchema
