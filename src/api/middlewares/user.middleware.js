@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 import User from '../models/user.model.js';
-import doesCredentialsMatch from '../services/verifyLoginCredentials.js';
 import {
   signupSchema,
   resetPassSchema
@@ -78,21 +78,29 @@ const verifyDecodeBearerToken = async (req, res, next) => {
 
 const verifyLoginCredentials = async (req, res, next) => {
   const { email, password } = req.body;
-  if (!email || !password)
-    res
-      .status(400)
-      .json({ success: false, message: 'login credentials not provided' });
 
-  const result = await doesCredentialsMatch(email, password);
+  try {
+    if (!email || !password) throw new Error('login credentials not provided');
 
-  if (!result.success) {
-    res.status(400).json({ success: result.success, message: result.message });
+    const user = await User.findOne({ email }).exec();
+    if (!user) throw new Error('invalid email provided');
+
+    if (!user.verified)
+      throw new Error('your email is not verified, login not allowed');
+
+    const isValid = await bcrypt.compare(password, user.hash);
+    if (!isValid) throw new Error('invalid password provided');
+
+    req.body.user = user.toObject();
+
+    next();
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message
+    });
     return;
   }
-
-  req.body.user = result.user;
-
-  next();
 };
 
 const validateResetPassword = async (req, res, next) => {
