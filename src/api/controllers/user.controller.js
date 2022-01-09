@@ -6,6 +6,7 @@ import sendVerificationEmail from '../services/sendVerificationEmail.js';
 import verifyUserEmail from '../services/verifyUserEmail.js';
 import getUserData from '../services/getUserData.js';
 import updateUserData from '../services/updateUserData.js';
+import fetchUsersData from '../services/fetchUsersData.js';
 
 const signupUser = async (req, res) => {
   const { fname, lname, email, password } = req.body;
@@ -91,10 +92,23 @@ const updateUser = async (req, res) => {
     const result = await updateUserData(id, userNewData);
     if (!result.success) throw new Error(result);
     res.status(200).json(result);
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
-const findUsers = (req, res) => {};
+const findUsers = async (req, res) => {
+  const { username, email } = req.query;
+  try {
+    if (!username && !email) throw new Error('please provide a search term');
+    const data = await fetchUsersData(username, email);
+    res
+      .status(200)
+      .json({ success: true, message: 'following users were found', data });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
 
 const resetPassword = async (req, res) => {
   const { id, password } = req.body;
