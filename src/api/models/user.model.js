@@ -20,6 +20,7 @@ const userSchema = new Schema(
     friends: { type: [ObjectId], default: [], ref: 'User' },
     inRequests: { type: [ObjectId], default: [], ref: 'User' },
     outRequests: { type: [ObjectId], default: [], ref: 'User' },
+    blocked: { type: [ObjectId], default: [], ref: 'User' },
     posts: { type: [ObjectId], default: [], ref: 'Posts' }
   },
   options
