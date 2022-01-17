@@ -2,13 +2,15 @@ import express from 'express';
 
 const friendsRouter = express.Router();
 
-import { getAllFriends } from '../controllers/friends.controller.js';
-import { verifyDecodeBearerToken } from '../middlewares/user.middleware.js';
+import {
+  getAllFriends,
+  sendFriendRequest
+} from '../controllers/friends.controller.js';
 
-friendsRouter.get('/', verifyDecodeBearerToken, getAllFriends);
+friendsRouter.get('/', getAllFriends);
 friendsRouter.get('/requests', () => {});
 friendsRouter.get('/suggestions', () => {});
-friendsRouter.post('/add', () => {});
+friendsRouter.post('/add', sendFriendRequest);
 friendsRouter.post('/accept', () => {});
 friendsRouter.post('/reject', () => {});
 friendsRouter.post('/remove', () => {});
