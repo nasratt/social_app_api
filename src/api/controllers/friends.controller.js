@@ -1,6 +1,7 @@
 import getUserFriends from '../services/getUserFriends.js';
 import sendRequest from '../services/sendRequest.js';
 import respondRequest from '../services/respondRequest.js';
+import unFriend from '../services/unFriend.js';
 
 const sendFriendRequest = async (req, res) => {
   const {
@@ -71,7 +72,25 @@ const getAllFriends = async (req, res) => {
   }
 };
 
-const removeFriend = async (req, res) => {};
+const removeFriend = async (req, res) => {
+  const {
+    friendId,
+    tokenData: { id }
+  } = req.body;
+
+  try {
+    await unFriend(id, friendId);
+    res.status(204).json({
+      success: true,
+      message: 'The user was successfully removed from your friends list'
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+};
 
 export {
   getAllFriends,
