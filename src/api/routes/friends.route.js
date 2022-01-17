@@ -2,7 +2,10 @@ import express from 'express';
 
 const friendsRouter = express.Router();
 
-friendsRouter.get('/', () => {});
+import { getAllFriends } from '../controllers/friends.controller.js';
+import { verifyDecodeBearerToken } from '../middlewares/user.middleware.js';
+
+friendsRouter.get('/', verifyDecodeBearerToken, getAllFriends);
 friendsRouter.get('/requests', () => {});
 friendsRouter.get('/suggestions', () => {});
 friendsRouter.post('/add', () => {});

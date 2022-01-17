@@ -17,10 +17,10 @@ const userSchema = new Schema(
     hash: String,
     profilePic: { type: String, default: '' },
     verified: { type: Boolean, default: false },
-    friends: { type: [ObjectId], default: [] },
-    inRequests: { type: [ObjectId], default: [] },
-    outRequests: { type: [ObjectId], default: [] },
-    posts: { type: [ObjectId], default: [] }
+    friends: { type: [ObjectId], default: [], ref: 'User' },
+    inRequests: { type: [ObjectId], default: [], ref: 'User' },
+    outRequests: { type: [ObjectId], default: [], ref: 'User' },
+    posts: { type: [ObjectId], default: [], ref: 'Posts' }
   },
   options
 );
