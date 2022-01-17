@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 
 import connectDB from './config/dbConnect.js';
 import userRouter from './api/routes/user.route.js';
+import friendsRouter from './api/routes/friends.route.js';
 
 // ****** Basic Setup *******
 const app = express();
@@ -17,6 +18,7 @@ connectDB();
 
 // ****** Routes *******
 app.use('/users', userRouter);
+app.use('/friends', friendsRouter);
 app.get('/ping', (req, res) => {
   res.status(200);
   res.end('Server is running and can respond to requests!');
