@@ -4,6 +4,8 @@ import respondRequest from '../services/respondRequest.js';
 import unFriend from '../services/unFriend.js';
 import getUserFriendRequests from '../services/getUserFriendRequests.js';
 import suggestFriends from '../services/suggestFriends.js';
+import block from '../services/block.js';
+import unBlock from '../services/unBlock.js';
 
 const sendFriendRequest = async (req, res) => {
   const {
@@ -134,6 +136,46 @@ const getFriendSuggestions = async (req, res) => {
   }
 };
 
+const blockUser = async (req, res) => {
+  const {
+    blockId,
+    tokenData: { id }
+  } = req.body;
+
+  try {
+    await block(id, blockId);
+    res.status(200).json({
+      success: true,
+      message: 'User was successfully blocked'
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+};
+
+const unBlockUser = async (req, res) => {
+  const {
+    blockId,
+    tokenData: { id }
+  } = req.body;
+
+  try {
+    await unBlock(id, blockId);
+    res.status(200).json({
+      success: true,
+      message: 'User was successfully unblocked'
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+};
+
 export {
   getAllFriends,
   sendFriendRequest,
@@ -141,5 +183,7 @@ export {
   rejectFriendRequest,
   removeFriend,
   getAllFriendRequests,
-  getFriendSuggestions
+  getFriendSuggestions,
+  blockUser,
+  unBlockUser
 };

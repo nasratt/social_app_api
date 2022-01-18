@@ -1,7 +1,5 @@
 import express from 'express';
 
-const friendsRouter = express.Router();
-
 import {
   getAllFriends,
   sendFriendRequest,
@@ -9,8 +7,12 @@ import {
   rejectFriendRequest,
   removeFriend,
   getAllFriendRequests,
-  getFriendSuggestions
+  getFriendSuggestions,
+  blockUser,
+  unBlockUser
 } from '../controllers/friends.controller.js';
+
+const friendsRouter = express.Router();
 
 friendsRouter.get('/', getAllFriends);
 friendsRouter.get('/requests', getAllFriendRequests);
@@ -19,5 +21,7 @@ friendsRouter.post('/add', sendFriendRequest);
 friendsRouter.post('/accept', acceptFriendRequest);
 friendsRouter.post('/reject', rejectFriendRequest);
 friendsRouter.post('/remove', removeFriend);
+friendsRouter.post('/block', blockUser);
+friendsRouter.post('/unblock', unBlockUser);
 
 export default friendsRouter;

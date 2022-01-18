@@ -20,6 +20,8 @@ import {
 
 const userRouter = express.Router();
 
+// TODO: blocked list should be considered in /search and /:id
+
 userRouter.post(
   '/signup',
   [validateSignupBody, checkDuplicateEmail],
