@@ -56,6 +56,7 @@ const suggestFriends = async (userId) => {
       { $replaceRoot: { newRoot: '$suggestions' } },
       {
         $project: {
+          email: false,
           hash: false,
           verified: false,
           inRequests: false,
