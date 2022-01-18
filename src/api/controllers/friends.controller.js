@@ -2,6 +2,8 @@ import getUserFriends from '../services/getUserFriends.js';
 import sendRequest from '../services/sendRequest.js';
 import respondRequest from '../services/respondRequest.js';
 import unFriend from '../services/unFriend.js';
+import getUserFriendRequests from '../services/getUserFriendRequests.js';
+import suggestFriends from '../services/suggestFriends.js';
 
 const sendFriendRequest = async (req, res) => {
   const {
@@ -92,10 +94,52 @@ const removeFriend = async (req, res) => {
   }
 };
 
+const getAllFriendRequests = async (req, res) => {
+  const {
+    tokenData: { id }
+  } = req.body;
+
+  try {
+    const data = await getUserFriendRequests(id);
+    res.status(200).json({
+      success: true,
+      message: 'Friend requests are successfully retrieved',
+      data
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+};
+
+const getFriendSuggestions = async (req, res) => {
+  const {
+    tokenData: { id }
+  } = req.body;
+
+  try {
+    const suggestions = await suggestFriends(id);
+    res.status(200).json({
+      success: true,
+      message: 'Friend suggestions for you is retrieved',
+      data: { suggestions }
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+};
+
 export {
   getAllFriends,
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
-  removeFriend
+  removeFriend,
+  getAllFriendRequests,
+  getFriendSuggestions
 };

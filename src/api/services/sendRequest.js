@@ -3,22 +3,27 @@ import User from '../models/user.model.js';
 const sendRequest = async (senderId, recieverId) => {
   try {
     const sender = await User.findById(senderId).exec();
-    if (!sender) throw new Error('invalid sender id provided');
+    if (!sender) throw new Error('Invalid sender id provided');
 
     const reciever = await User.findById(recieverId).exec();
-    if (!reciever) throw new Error('invalid reciever id provided');
+    if (!reciever) throw new Error('Invalid reciever id provided');
 
     if (reciever.blocked.includes(senderId))
       throw new Error(
-        'you have been blocked by user, can not send friend request'
+        'You have been blocked by user, can not send friend request'
       );
 
     if (sender.friends.includes(recieverId))
-      throw new Error('the provided user is already your friend');
+      throw new Error('The provided user is already your friend');
+
+    if (sender.inRequests.includes(recieverId))
+      throw new Error(
+        'The provided user has already sent you a friend request'
+      );
 
     if (sender.outRequests.includes(recieverId))
       throw new Error(
-        'you have already sent a friend request to provided user'
+        'You have already sent a friend request to provided user'
       );
 
     sender.outRequests.addToSet(recieverId);
