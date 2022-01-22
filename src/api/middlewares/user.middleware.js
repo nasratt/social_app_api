@@ -4,8 +4,10 @@ import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 import {
   signupSchema,
-  resetPassSchema
-} from '../validations/authValidation.js';
+  resetPassSchema,
+  userUpdateSchema
+} from '../validations/validationSchema.js';
+import APIError from '../helpers/apiError.js';
 
 const validateSignupBody = (req, res, next) => {
   const result = signupSchema.validate(req.body);
@@ -34,7 +36,7 @@ const checkDuplicateEmail = (req, res, next) => {
     if (user) {
       res.status(400).json({
         success: false,
-        message: 'someone is already using that email'
+        message: 'Someone is already using that email'
       });
       return;
     }
@@ -56,7 +58,7 @@ const verifyDecodeJWT = async (req, res, next) => {
 const verifyDecodeBearerToken = async (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization) {
-    res.status(400).json({ success: false, message: 'no token provided' });
+    res.status(400).json({ success: false, message: 'No token provided' });
     return;
   }
 
@@ -65,7 +67,7 @@ const verifyDecodeBearerToken = async (req, res, next) => {
 
     const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
     if (!decodedToken)
-      throw new Error({ type: invalid, message: 'invalid token provided' });
+      throw new Error({ type: invalid, message: 'Invalid token provided' });
 
     req.body.tokenData = decodedToken;
     next();
@@ -80,16 +82,16 @@ const verifyLoginCredentials = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    if (!email || !password) throw new Error('login credentials not provided');
+    if (!email || !password) throw new Error('Login credentials not provided');
 
     const user = await User.findOne({ email }).exec();
-    if (!user) throw new Error('invalid email provided');
+    if (!user) throw new Error('Invalid email provided');
 
     if (!user.verified)
-      throw new Error('your email is not verified, login not allowed');
+      throw new Error('Your email is not verified, login is not allowed');
 
     const isValid = await bcrypt.compare(password, user.hash);
-    if (!isValid) throw new Error('invalid password provided');
+    if (!isValid) throw new Error('Invalid password provided');
 
     req.body.user = user.toObject();
 
@@ -111,10 +113,10 @@ const validateResetPassword = async (req, res, next) => {
     if (result.error) throw new Error(result.error.details[0].message);
 
     const user = await User.findOne({ email }).exec();
-    if (!user) throw new Error('invalid email provided');
+    if (!user) throw new Error('Invalid email provided');
 
     if (!user.verified)
-      throw new Error('email is not verified, cannot reset password');
+      throw new Error('Email is not verified, cannot reset password');
     req.body.id = user._id;
 
     next();
@@ -123,11 +125,21 @@ const validateResetPassword = async (req, res, next) => {
   }
 };
 
+const validateUpdateBody = (req, res, next) => {
+  const { ...updateData } = req.body;
+  const result = userUpdateSchema.validate(updateData);
+  const errMessage = result?.error?.details[0]?.message;
+
+  if (result.error) next(new APIError(400, errMessage));
+  else next();
+};
+
 export {
   checkDuplicateEmail,
   validateSignupBody,
   verifyDecodeJWT,
   verifyLoginCredentials,
   verifyDecodeBearerToken,
-  validateResetPassword
+  validateResetPassword,
+  validateUpdateBody
 };

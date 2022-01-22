@@ -7,7 +7,7 @@ const generateLink = async (id) => {
     const token = await jwt.sign({ id }, process.env.JWT_SECRET, {
       expiresIn: 3600
     });
-    return `${BASE_URL}/users/verify_email?secret=${token}`;
+    return `${BASE_URL}/users/verify-email?secret=${token}`;
   } catch (err) {
     console.log(err.message);
   }

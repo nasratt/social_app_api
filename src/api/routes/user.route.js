@@ -15,7 +15,8 @@ import {
   verifyDecodeJWT,
   verifyLoginCredentials,
   verifyDecodeBearerToken,
-  validateResetPassword
+  validateResetPassword,
+  validateUpdateBody
 } from '../middlewares/user.middleware.js';
 
 const userRouter = express.Router();
@@ -27,11 +28,11 @@ userRouter.post(
   [validateSignupBody, checkDuplicateEmail],
   signupUser
 );
-userRouter.get('/verify_email', verifyDecodeJWT, verifyEmail);
+userRouter.get('/verify-email', verifyDecodeJWT, verifyEmail);
 userRouter.post('/login', verifyLoginCredentials, loginUser);
 userRouter.get('/search', verifyDecodeBearerToken, findUsers);
 userRouter.post('/forgot-password', validateResetPassword, resetPassword);
 userRouter.get('/:id', verifyDecodeBearerToken, sendUserData);
-userRouter.put('/:id', verifyDecodeBearerToken, updateUser);
+userRouter.put('/:id', validateUpdateBody, verifyDecodeBearerToken, updateUser);
 
 export default userRouter;
