@@ -7,25 +7,30 @@
   "extends": [
     "airbnb-base",
     "prettier",
-    "plugin:node/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:node/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
   "parserOptions": {
-    "ecmaVersion": 2018
+    "ecmaVersion": 2018,
+    "sourceType": "module"
   },
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error",
-    "no-unused-vars": "warn",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "none", "ignoreRestSiblings": false }
+    ],
     "no-console": "off",
     "func-names": "off",
     "no-plusplus": "off",
     "no-process-exit": "off",
     "class-methods-use-this": "warn",
-    "import/extensions": "ignorePackages"
+    "import/extensions": ["warn", "ignorePackages"],
+    "linebreak-style": "off"
   }
 }

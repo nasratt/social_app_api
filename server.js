@@ -13,7 +13,7 @@ app.get('/ping', (req, res) => {
 app.all('*', (req, res) => {
   res.status(404).json({
     success: false,
-    message: 'Requested page/resource not found!'
+    message: 'Requested page/resource not found!',
   });
 });
 
@@ -22,7 +22,7 @@ app.use((err, req, res, next) => {
   console.log(code, err.message);
   res.status(code).json({
     success: false,
-    message: err.message
+    message: err.message,
   });
 });
 
