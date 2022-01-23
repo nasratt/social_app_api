@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import User from '../models/user.model.js';
+
 import APIError from '../helpers/apiError.js';
 
 const unBlock = async (userId, blockedId) => {

@@ -18,7 +18,7 @@ const signupUser = catchErrors(async (req, res, next) => {
     fname,
     lname,
     email,
-    hash
+    hash,
   });
 
   const resNewUser = await newUser.save();
@@ -32,7 +32,7 @@ const signupUser = catchErrors(async (req, res, next) => {
     success: true,
     message:
       'you have successfully signed up, please visit your email to verify your account',
-    data: { id: resNewUser._id }
+    data: { id: resNewUser._id },
   });
 });
 
@@ -45,7 +45,7 @@ const verifyEmail = catchErrors(async (req, res, next) => {
 
 const loginUser = catchErrors((req, res, next) => {
   const {
-    user: { email, _id: id, fname, lname }
+    user: { email, _id: id, fname, lname },
   } = req.body;
 
   const token = jwt.sign({ id, fname, lname, email }, process.env.JWT_SECRET);
@@ -54,8 +54,8 @@ const loginUser = catchErrors((req, res, next) => {
     message: 'you have successfully logged in',
     data: {
       user: { id, fname, lname, email },
-      token
-    }
+      token,
+    },
   });
 });
 
@@ -69,8 +69,8 @@ const sendUserData = catchErrors(async (req, res, next) => {
     success: true,
     message: 'User profile data was successfully fetched',
     data: {
-      user
-    }
+      user,
+    },
   });
 });
 
@@ -86,7 +86,7 @@ const updateUser = catchErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: 'Your profile data was successfully updated',
-    data: { user: updatedUser }
+    data: { user: updatedUser },
   });
 });
 
@@ -100,7 +100,7 @@ const findUsers = catchErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: 'Following users were found',
-    data: { users: usersFound }
+    data: { users: usersFound },
   });
 });
 
@@ -122,5 +122,5 @@ export {
   sendUserData,
   updateUser,
   findUsers,
-  resetPassword
+  resetPassword,
 };
