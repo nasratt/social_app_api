@@ -7,174 +7,130 @@ import suggestFriends from '../services/suggestFriends.js';
 import block from '../services/block.js';
 import unBlock from '../services/unBlock.js';
 
-const sendFriendRequest = async (req, res) => {
+import catchErrors from '../helpers/catchErrors.js';
+
+const sendFriendRequest = catchErrors(async (req, res) => {
   const {
     recieverId,
     tokenData: { id }
   } = req.body;
 
-  try {
-    const result = await sendRequest(id, recieverId);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
+  await sendRequest(id, recieverId);
 
-const acceptFriendRequest = async (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Your friend request was successfully sent'
+  });
+});
+
+const acceptFriendRequest = catchErrors(async (req, res) => {
   const {
     requesterId,
     tokenData: { id }
   } = req.body;
 
-  try {
-    await respondRequest(id, requesterId);
-    res.status(201).json({
-      success: true,
-      message: 'You have successfully accepted the request'
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
+  await respondRequest(id, requesterId);
+  res.status(200).json({
+    success: true,
+    message: 'You have successfully accepted the friend request'
+  });
+});
 
-const rejectFriendRequest = async (req, res) => {
+const rejectFriendRequest = catchErrors(async (req, res) => {
   const {
     requesterId,
     tokenData: { id }
   } = req.body;
 
-  try {
-    await respondRequest(id, requesterId, false);
-    res.status(201).json({
-      success: true,
-      message: 'Friend request was rejected'
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
+  await respondRequest(id, requesterId, false);
+  res.status(200).json({
+    success: true,
+    message: 'Friend request was rejected'
+  });
+});
 
-const getAllFriends = async (req, res) => {
-  try {
-    const result = await getUserFriends(req.body.tokenData.id);
+const getAllFriends = catchErrors(async (req, res) => {
+  const { page, limit } = req.query;
+  const { tokenData } = req.body;
 
-    if (!result.success) throw new Error(result.message);
+  const userFriends = await getUserFriends(tokenData.id, +page, +limit);
 
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-};
+  res.status(200).json({
+    success: true,
+    message: 'Your friends list successfully fetched',
+    data: {
+      friends: userFriends
+    }
+  });
+});
 
-const removeFriend = async (req, res) => {
+const removeFriend = catchErrors(async (req, res) => {
   const {
     friendId,
     tokenData: { id }
   } = req.body;
 
-  try {
-    await unFriend(id, friendId);
-    res.status(204).json({
-      success: true,
-      message: 'The user was successfully removed from your friends list'
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
+  await unFriend(id, friendId);
+  res.status(200).json({
+    success: true,
+    message: 'The user was successfully removed from your friends list'
+  });
+});
 
-const getAllFriendRequests = async (req, res) => {
+const getAllFriendRequests = catchErrors(async (req, res) => {
   const {
     tokenData: { id }
   } = req.body;
 
-  try {
-    const data = await getUserFriendRequests(id);
-    res.status(200).json({
-      success: true,
-      message: 'Friend requests are successfully retrieved',
-      data
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
+  const friendRequests = await getUserFriendRequests(id);
+  res.status(200).json({
+    success: true,
+    message: 'Friend requests were successfully fetched',
+    data: {
+      friendRequests
+    }
+  });
+});
 
-const getFriendSuggestions = async (req, res) => {
+const getFriendSuggestions = catchErrors(async (req, res) => {
+  const { page, limit } = req.query;
   const {
     tokenData: { id }
   } = req.body;
 
-  try {
-    const suggestions = await suggestFriends(id);
-    res.status(200).json({
-      success: true,
-      message: 'Friend suggestions for you is retrieved',
-      data: { suggestions }
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
+  const suggestions = await suggestFriends(id, +page, +limit);
+  res.status(200).json({
+    success: true,
+    message: 'Friend suggestions was successfully fetched',
+    data: { suggestions }
+  });
+});
 
-const blockUser = async (req, res) => {
+const blockUser = catchErrors(async (req, res) => {
   const {
     blockId,
     tokenData: { id }
   } = req.body;
 
-  try {
-    await block(id, blockId);
-    res.status(200).json({
-      success: true,
-      message: 'User was successfully blocked'
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
+  await block(id, blockId);
+  res.status(200).json({
+    success: true,
+    message: 'User was successfully blocked'
+  });
+});
 
-const unBlockUser = async (req, res) => {
+const unBlockUser = catchErrors(async (req, res) => {
   const {
     blockId,
     tokenData: { id }
   } = req.body;
 
-  try {
-    await unBlock(id, blockId);
-    res.status(200).json({
-      success: true,
-      message: 'User was successfully unblocked'
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
+  await unBlock(id, blockId);
+  res.status(200).json({
+    success: true,
+    message: 'User was successfully unblocked'
+  });
+});
 
 export {
   getAllFriends,

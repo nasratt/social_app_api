@@ -1,4 +1,7 @@
+import mongoose from 'mongoose';
+
 import User from '../models/user.model.js';
+import APIError from '../helpers/apiError.js';
 
 /**
  * Unfriends two users. If there is any error, it throws it, errors should be caught in callee.
@@ -6,22 +9,25 @@ import User from '../models/user.model.js';
  * @param {String} friendId ID of friend to be removed
  */
 const unFriend = async (userId, friendId) => {
-  try {
-    const user = await User.findById(userId).exec();
-    if (!user) throw new Error('Invalid user id provided');
+  if (!mongoose.isValidObjectId(userId))
+    throw new APIError(400, 'Invalid user ID provided');
 
-    if (!user.friends.includes(friendId))
-      throw new Error('Provided user is not your friend');
+  if (!mongoose.isValidObjectId(friendId))
+    throw new APIError(400, 'Invalid friend ID provided');
 
-    const friend = await User.findById(friendId).exec();
-    if (!friend) throw new Error('Invalid friend id provided');
+  const user = await User.findById(userId).exec();
+  if (!user) throw new APIError(404, 'No user was found with given user ID');
 
-    user.friends.pull(friendId);
-    friend.friends.pull(userId);
-    await Promise.all([user.save(), friend.save()]);
-  } catch (err) {
-    throw err;
-  }
+  if (!user.friends.includes(friendId))
+    throw new APIError(400, 'Provided user is not your friend');
+
+  const friend = await User.findById(friendId).exec();
+  if (!friend)
+    throw new APIError(404, 'No user was found with given friend ID');
+
+  user.friends.pull(friendId);
+  friend.friends.pull(userId);
+  await Promise.all([user.save(), friend.save()]);
 };
 
 export default unFriend;
