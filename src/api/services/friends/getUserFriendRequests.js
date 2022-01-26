@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import User from '../models/user.model.js';
-import APIError from '../helpers/apiError.js';
+import User from '../../models/user.model.js';
+import APIError from '../../helpers/apiError.js';
 
 const getUserFriendRequests = async (userId) => {
   if (!mongoose.isValidObjectId(userId))

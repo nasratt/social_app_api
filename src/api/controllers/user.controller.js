@@ -2,15 +2,17 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import User from '../models/user.model.js';
-import sendVerificationEmail from '../services/sendVerificationEmail.js';
-import verifyUserEmail from '../services/verifyUserEmail.js';
-import getUserData from '../services/getUserData.js';
-import updateUserData from '../services/updateUserData.js';
-import fetchUsersData from '../services/fetchUsersData.js';
 import catchErrors from '../helpers/catchErrors.js';
 import APIError from '../helpers/apiError.js';
+import {
+  sendVerificationEmail,
+  verifyUserEmail,
+  getUserData,
+  updateUserData,
+  fetchUsersData
+} from '../services/users/index.js';
 
-const signupUser = catchErrors(async (req, res, next) => {
+const signupUser = catchErrors(async (req, res) => {
   const { fname, lname, email, password } = req.body;
 
   const hash = await bcrypt.hash(password, 8);
@@ -18,11 +20,11 @@ const signupUser = catchErrors(async (req, res, next) => {
     fname,
     lname,
     email,
-    hash,
+    hash
   });
 
   const resNewUser = await newUser.save();
-  const vEmail = await sendVerificationEmail(
+  await sendVerificationEmail(
     'Socail App API',
     'Email verification',
     resNewUser
@@ -32,11 +34,11 @@ const signupUser = catchErrors(async (req, res, next) => {
     success: true,
     message:
       'you have successfully signed up, please visit your email to verify your account',
-    data: { id: resNewUser._id },
+    data: { id: resNewUser._id }
   });
 });
 
-const verifyEmail = catchErrors(async (req, res, next) => {
+const verifyEmail = catchErrors(async (req, res) => {
   await verifyUserEmail(req.body.id);
   res
     .status(200)
@@ -45,7 +47,7 @@ const verifyEmail = catchErrors(async (req, res, next) => {
 
 const loginUser = catchErrors((req, res, next) => {
   const {
-    user: { email, _id: id, fname, lname },
+    user: { email, _id: id, fname, lname }
   } = req.body;
 
   const token = jwt.sign({ id, fname, lname, email }, process.env.JWT_SECRET);
@@ -54,12 +56,12 @@ const loginUser = catchErrors((req, res, next) => {
     message: 'you have successfully logged in',
     data: {
       user: { id, fname, lname, email },
-      token,
-    },
+      token
+    }
   });
 });
 
-const sendUserData = catchErrors(async (req, res, next) => {
+const sendUserData = catchErrors(async (req, res) => {
   const { id } = req.params;
   const { tokenData } = req.body;
   if (!id) throw new APIError(400, 'No ID provided');
@@ -69,12 +71,12 @@ const sendUserData = catchErrors(async (req, res, next) => {
     success: true,
     message: 'User profile data was successfully fetched',
     data: {
-      user,
-    },
+      user
+    }
   });
 });
 
-const updateUser = catchErrors(async (req, res, next) => {
+const updateUser = catchErrors(async (req, res) => {
   const { id } = req.params;
   const { tokenData, ...userNewData } = req.body;
 
@@ -86,11 +88,11 @@ const updateUser = catchErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: 'Your profile data was successfully updated',
-    data: { user: updatedUser },
+    data: { user: updatedUser }
   });
 });
 
-const findUsers = catchErrors(async (req, res, next) => {
+const findUsers = catchErrors(async (req, res) => {
   const { name, email, page, limit } = req.query;
 
   if (!name && !email) throw new APIError(400, 'Please provide a search term');
@@ -100,11 +102,11 @@ const findUsers = catchErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: 'Following users were found',
-    data: { users: usersFound },
+    data: { users: usersFound }
   });
 });
 
-const resetPassword = catchErrors(async (req, res, next) => {
+const resetPassword = catchErrors(async (req, res) => {
   const { id, password } = req.body;
 
   const result = await updateUserData(id, { password });
@@ -122,5 +124,5 @@ export {
   sendUserData,
   updateUser,
   findUsers,
-  resetPassword,
+  resetPassword
 };

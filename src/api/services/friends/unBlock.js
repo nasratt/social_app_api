@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-import User from '../models/user.model.js';
+import User from '../../models/user.model.js';
 
-import APIError from '../helpers/apiError.js';
+import APIError from '../../helpers/apiError.js';
 
 const unBlock = async (userId, blockedId) => {
   if (!mongoose.isValidObjectId(userId))

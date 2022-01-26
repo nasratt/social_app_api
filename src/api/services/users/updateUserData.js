@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-import User from '../models/user.model.js';
-import APIError from '../helpers/apiError.js';
-import { userUpdateSchema } from '../validations/validationSchema.js';
+import User from '../../models/user.model.js';
+import APIError from '../../helpers/apiError.js';
+import { userUpdateSchema } from '../../validations/validationSchema.js';
 
 const updateUserData = async (id, userObj) => {
   if (!mongoose.isValidObjectId(id))

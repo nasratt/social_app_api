@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import User from '../models/user.model.js';
-import APIError from '../helpers/apiError.js';
+import User from '../../models/user.model.js';
+import APIError from '../../helpers/apiError.js';
 
 /**
  * Responds to friend request by either accepting or rejecting it.

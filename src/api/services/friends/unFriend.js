@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import User from '../models/user.model.js';
-import APIError from '../helpers/apiError.js';
+import User from '../../models/user.model.js';
+import APIError from '../../helpers/apiError.js';
 
 /**
  * Unfriends two users. If there is any error, it throws it, errors should be caught in callee.

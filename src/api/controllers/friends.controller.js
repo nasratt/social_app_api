@@ -1,11 +1,13 @@
-import getUserFriends from '../services/getUserFriends.js';
-import sendRequest from '../services/sendRequest.js';
-import respondRequest from '../services/respondRequest.js';
-import unFriend from '../services/unFriend.js';
-import getUserFriendRequests from '../services/getUserFriendRequests.js';
-import suggestFriends from '../services/suggestFriends.js';
-import block from '../services/block.js';
-import unBlock from '../services/unBlock.js';
+import {
+  getUserFriends,
+  sendRequest,
+  respondRequest,
+  unFriend,
+  getUserFriendRequests,
+  suggestFriends,
+  block,
+  unBlock
+} from '../services/friends/index.js';
 
 import catchErrors from '../helpers/catchErrors.js';
 

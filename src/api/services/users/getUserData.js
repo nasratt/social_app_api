@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import User from '../models/user.model.js';
-import APIError from '../helpers/apiError.js';
+import User from '../../models/user.model.js';
+import APIError from '../../helpers/apiError.js';
 
 const getUserData = async (id, loggedInId) => {
   if (!mongoose.isValidObjectId(id))

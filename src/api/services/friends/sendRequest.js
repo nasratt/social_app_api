@@ -1,5 +1,5 @@
-import User from '../models/user.model.js';
-import APIError from '../helpers/apiError.js';
+import User from '../../models/user.model.js';
+import APIError from '../../helpers/apiError.js';
 
 const sendRequest = async (senderId, recieverId) => {
   const sender = await User.findById(senderId).exec();

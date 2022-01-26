@@ -1,4 +1,4 @@
-import User from '../models/user.model.js';
+import User from '../../models/user.model.js';
 
 const verifyUserEmail = async (id) => {
   try {
