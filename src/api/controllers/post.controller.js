@@ -1,7 +1,12 @@
 import APIError from '../helpers/apiError.js';
 import catchErrors from '../helpers/catchErrors.js';
 import { postSchema } from '../validations/validationSchema.js';
-import { addPost, getPost, updatePost } from '../services/posts/index.js';
+import {
+  addPost,
+  getPost,
+  updatePost,
+  deletePost
+} from '../services/posts/index.js';
 
 const createPost = catchErrors(async (req, res) => {
   const { tokenData, ...postData } = req.body;
@@ -45,4 +50,26 @@ const updateUserPost = catchErrors(async (req, res) => {
   });
 });
 
-export { createPost, getUserPost, updateUserPost };
+const deleteUserPost = catchErrors(async (req, res) => {
+  const { id: postId } = req.params;
+  const { tokenData } = req.body;
+
+  await deletePost(tokenData.id, postId);
+  res.status(200).json({
+    success: true,
+    message: 'Post was successfully deleted'
+  });
+});
+
+const likeUserPost = catchErrors(async (req, res) => {});
+
+const dislikeUserPost = catchErrors(async (req, res) => {});
+
+export {
+  createPost,
+  getUserPost,
+  updateUserPost,
+  deleteUserPost,
+  likeUserPost,
+  dislikeUserPost
+};
