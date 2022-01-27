@@ -70,4 +70,25 @@ const userUpdateSchema = Joi.object({
     })
 });
 
-export { signupSchema, resetPassSchema, userUpdateSchema };
+const postSchema = Joi.object({
+  body: Joi.string().required().min(2).max(1000).messages({
+    'string.base': '{{#label}} should be a string',
+    'any.required': '{{#label}} is required',
+    'string.min': '{{#label}} should be minimum 2 characters',
+    'string.max': '{{#label}} should maximum 1000 characters'
+  }),
+  images: Joi.array().items(Joi.string()).messages({
+    'array.base': '{{#label}} should be an array of strings',
+    'array.includes': '{{#label}} contains non string value at {{#pos}}'
+  }),
+  tags: Joi.array().items(Joi.string()).messages({
+    'array.base': '{{#label}} should be an array of strings',
+    'array.includes': '{{#label}} contains non string value at {{#pos}}'
+  }),
+  visibility: Joi.string().valid('public', 'friends', 'me').messages({
+    'string.base': '{{#label}} should be a string',
+    'any.only': '{{#label}} can only take "public", "friends", and "me"'
+  })
+});
+
+export { signupSchema, resetPassSchema, userUpdateSchema, postSchema };
