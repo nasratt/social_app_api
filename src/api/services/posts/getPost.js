@@ -14,7 +14,7 @@ const getPost = async (userId, postId) => {
   const post = await Post.findById(postId).exec();
   if (!post) throw new APIError(404, 'No post was found with given ID');
 
-  if (post.authorId !== userId) {
+  if (post.authorId.toString() !== userId) {
     const postAuthor = await User.findById(post.authorId).exec();
 
     if (

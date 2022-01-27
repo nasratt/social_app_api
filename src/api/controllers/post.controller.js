@@ -1,7 +1,7 @@
 import APIError from '../helpers/apiError.js';
 import catchErrors from '../helpers/catchErrors.js';
 import { postSchema } from '../validations/validationSchema.js';
-import { addPost, getPost } from '../services/posts/index.js';
+import { addPost, getPost, updatePost } from '../services/posts/index.js';
 
 const createPost = catchErrors(async (req, res) => {
   const { tokenData, ...postData } = req.body;
@@ -32,4 +32,17 @@ const getUserPost = catchErrors(async (req, res) => {
   });
 });
 
-export { createPost, getUserPost };
+const updateUserPost = catchErrors(async (req, res) => {
+  const { id: postId } = req.params;
+  const { tokenData, ...updateData } = req.body;
+
+  const updatedPost = await updatePost(tokenData.id, postId, updateData);
+
+  res.status(200).json({
+    success: true,
+    message: 'Post was successfully fetched',
+    data: { updatedPost }
+  });
+});
+
+export { createPost, getUserPost, updateUserPost };
