@@ -63,11 +63,11 @@ const verifyDecodeBearerToken = async (req, res, next) => {
   }
 
   try {
-    const [_, token] = authorization.split(' ');
+    const token = authorization.split(' ')[1];
 
     const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
     if (!decodedToken)
-      throw new Error({ type: invalid, message: 'Invalid token provided' });
+      throw new Error({ type: 'invalid', message: 'Invalid token provided' });
 
     req.body.tokenData = decodedToken;
     next();
@@ -101,7 +101,6 @@ const verifyLoginCredentials = async (req, res, next) => {
       success: false,
       message: err.message
     });
-    return;
   }
 };
 
