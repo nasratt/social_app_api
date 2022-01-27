@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import Post from '../../models/post.model.js';
 import Comment from '../../models/comment.model.js';
+import User from '../../models/user.model.js';
 import APIError from '../../helpers/apiError.js';
 
 const deletePost = async (userId, postId) => {
@@ -16,6 +17,10 @@ const deletePost = async (userId, postId) => {
 
   if (post.authorId.toString() !== userId)
     throw new APIError(403, 'You are not allowed to delete post');
+
+  const user = await User.findById(userId).exec();
+  user.posts.pull(postId);
+  await user.save();
 
   await Post.deleteOne({ _id: postId });
   await Comment.deleteMany({ postId });
