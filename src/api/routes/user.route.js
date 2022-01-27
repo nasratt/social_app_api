@@ -15,8 +15,7 @@ import {
   verifyDecodeJWT,
   verifyLoginCredentials,
   verifyDecodeBearerToken,
-  validateResetPassword,
-  validateUpdateBody
+  validateResetPassword
 } from '../middlewares/user.middleware.js';
 
 const userRouter = express.Router();
@@ -33,6 +32,6 @@ userRouter.post('/login', verifyLoginCredentials, loginUser);
 userRouter.get('/search', verifyDecodeBearerToken, findUsers);
 userRouter.post('/forgot-password', validateResetPassword, resetPassword);
 userRouter.get('/:id', verifyDecodeBearerToken, sendUserData);
-userRouter.put('/:id', validateUpdateBody, verifyDecodeBearerToken, updateUser);
+userRouter.put('/:id', verifyDecodeBearerToken, updateUser);
 
 export default userRouter;

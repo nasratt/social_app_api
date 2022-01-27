@@ -9,10 +9,15 @@ const updateUserData = async (id, userObj) => {
   if (!mongoose.isValidObjectId(id))
     throw new APIError(400, 'Invalid user ID provided');
 
+  const result = userUpdateSchema.validate(userObj);
+  const errMessage = result?.error?.details[0]?.message;
+
+  if (result.error) throw new APIError(400, errMessage);
+
   const user = await User.findOne({ _id: id }).exec();
   if (!user) throw new Error('No user was found with given ID');
 
-  if (userObj.hasOwnProperty('password')) {
+  if (Object.hasOwnProperty.call(userObj, 'password')) {
     const hash = await bcrypt.hash(userObj.password, 8);
     user.hash = hash;
   }

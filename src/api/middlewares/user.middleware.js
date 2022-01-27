@@ -2,12 +2,11 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 import User from '../models/user.model.js';
+import APIError from '../helpers/apiError.js';
 import {
   signupSchema,
-  resetPassSchema,
-  userUpdateSchema
+  resetPassSchema
 } from '../validations/validationSchema.js';
-import APIError from '../helpers/apiError.js';
 
 const validateSignupBody = (req, res, next) => {
   const result = signupSchema.validate(req.body);
@@ -66,14 +65,12 @@ const verifyDecodeBearerToken = async (req, res, next) => {
     const token = authorization.split(' ')[1];
 
     const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
-    if (!decodedToken)
-      throw new Error({ type: 'invalid', message: 'Invalid token provided' });
+    if (!decodedToken) throw new APIError(400, 'Invalid token provided');
 
     req.body.tokenData = decodedToken;
     next();
   } catch (err) {
-    if (err.type === 'invalid') res.status(400);
-    else res.status(500);
+    res.status(err.statusCode || 500);
     res.json({ success: false, message: err.message });
   }
 };
@@ -82,16 +79,20 @@ const verifyLoginCredentials = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    if (!email || !password) throw new Error('Login credentials not provided');
+    if (!email || !password)
+      throw new APIError(400, 'Login credentials not provided');
 
     const user = await User.findOne({ email }).exec();
-    if (!user) throw new Error('Invalid email provided');
+    if (!user) throw new APIError(400, 'Invalid email provided');
 
     if (!user.verified)
-      throw new Error('Your email is not verified, login is not allowed');
+      throw new APIError(
+        409,
+        'Your email is not verified, login is not allowed'
+      );
 
     const isValid = await bcrypt.compare(password, user.hash);
-    if (!isValid) throw new Error('Invalid password provided');
+    if (!isValid) throw new APIError(400, 'Invalid password provided');
 
     req.body.user = user.toObject();
 
@@ -109,13 +110,13 @@ const validateResetPassword = async (req, res, next) => {
   try {
     const result = resetPassSchema.validate(req.body);
 
-    if (result.error) throw new Error(result.error.details[0].message);
+    if (result.error) throw new APIError(400, result.error.details[0].message);
 
     const user = await User.findOne({ email }).exec();
-    if (!user) throw new Error('Invalid email provided');
+    if (!user) throw new APIError(400, 'Invalid email provided');
 
     if (!user.verified)
-      throw new Error('Email is not verified, cannot reset password');
+      throw new APIError(409, 'Email is not verified, cannot reset password');
     req.body.id = user._id;
 
     next();
@@ -124,21 +125,11 @@ const validateResetPassword = async (req, res, next) => {
   }
 };
 
-const validateUpdateBody = (req, res, next) => {
-  const { ...updateData } = req.body;
-  const result = userUpdateSchema.validate(updateData);
-  const errMessage = result?.error?.details[0]?.message;
-
-  if (result.error) next(new APIError(400, errMessage));
-  else next();
-};
-
 export {
   checkDuplicateEmail,
   validateSignupBody,
   verifyDecodeJWT,
   verifyLoginCredentials,
   verifyDecodeBearerToken,
-  validateResetPassword,
-  validateUpdateBody
+  validateResetPassword
 };
