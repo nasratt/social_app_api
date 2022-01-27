@@ -33,7 +33,7 @@ const signupUser = catchErrors(async (req, res) => {
   res.status(201).json({
     success: true,
     message:
-      'you have successfully signed up, please visit your email to verify your account',
+      'You have successfully signed up, please visit your email to verify your account',
     data: { id: resNewUser._id }
   });
 });
@@ -42,7 +42,7 @@ const verifyEmail = catchErrors(async (req, res) => {
   await verifyUserEmail(req.body.id);
   res
     .status(200)
-    .json({ success: true, message: 'your email was verified successfully' });
+    .json({ success: true, message: 'Your email was verified successfully' });
 });
 
 const loginUser = catchErrors((req, res, next) => {
@@ -53,7 +53,7 @@ const loginUser = catchErrors((req, res, next) => {
   const token = jwt.sign({ id, fname, lname, email }, process.env.JWT_SECRET);
   res.status(200).json({
     success: true,
-    message: 'you have successfully logged in',
+    message: 'You have successfully logged in',
     data: {
       user: { id, fname, lname, email },
       token
@@ -114,7 +114,7 @@ const resetPassword = catchErrors(async (req, res) => {
   if (!result.success) throw new Error(result);
   res
     .status(200)
-    .json({ success: true, message: 'password was successfully reset' });
+    .json({ success: true, message: 'Password was successfully reset' });
 });
 
 export {
