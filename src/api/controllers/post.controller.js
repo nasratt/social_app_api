@@ -5,7 +5,9 @@ import {
   addPost,
   getPost,
   updatePost,
-  deletePost
+  deletePost,
+  likePost,
+  dislikePost
 } from '../services/posts/index.js';
 
 const createPost = catchErrors(async (req, res) => {
@@ -61,9 +63,27 @@ const deleteUserPost = catchErrors(async (req, res) => {
   });
 });
 
-const likeUserPost = catchErrors(async (req, res) => {});
+const likeUserPost = catchErrors(async (req, res) => {
+  const { id: postId } = req.params;
+  const { tokenData } = req.body;
 
-const dislikeUserPost = catchErrors(async (req, res) => {});
+  await likePost(tokenData.id, postId);
+  res.status(200).json({
+    success: true,
+    message: 'You have successfully liked the post'
+  });
+});
+
+const dislikeUserPost = catchErrors(async (req, res) => {
+  const { id: postId } = req.params;
+  const { tokenData } = req.body;
+
+  await dislikePost(tokenData.id, postId);
+  res.status(200).json({
+    success: true,
+    message: 'You have successfully disliked the post'
+  });
+});
 
 export {
   createPost,

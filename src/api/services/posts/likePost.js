@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import Post from '../../models/post.model.js';
 import APIError from '../../helpers/apiError.js';
 
-const getPost = async (userId, postId) => {
+const likePost = async (userId, postId) => {
   if (!mongoose.isValidObjectId(userId))
     throw new APIError(400, 'Invalid user ID provided');
 
@@ -14,9 +14,12 @@ const getPost = async (userId, postId) => {
   if (!post) throw new APIError(404, 'No post was found with given ID');
 
   if (post.isUserAllowedToView(userId)) {
-    return post;
+    if (post.likes.includes(userId))
+      throw new APIError(403, 'You have already liked the post');
+    post.likes.addToSet(userId);
+    await post.save();
   }
-  throw new APIError(403, 'You are not allowed to view the post');
+  throw new APIError(403, 'You are not allowed to like the post');
 };
 
-export default getPost;
+export default likePost;

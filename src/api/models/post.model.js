@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+import User from './user.model.js';
+
 const { Schema, model } = mongoose;
 const { ObjectId } = Schema.Types;
 
@@ -20,6 +22,16 @@ const postSchema = new Schema(
   },
   { minimize: false, timestamps: true }
 );
+
+postSchema.methods.isUserAllowedToView = async function (userId) {
+  const postAuthor = await User.findById(this.authorId).exec();
+
+  if (this.authorId.toString() === userId) return true;
+  return (
+    this.visibility === 'public' ||
+    (this.visibility === 'friends' && postAuthor.friends.includes(userId))
+  );
+};
 
 const Post = model('Post', postSchema);
 export default Post;

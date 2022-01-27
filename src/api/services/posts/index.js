@@ -2,5 +2,7 @@ import addPost from './addPost.js';
 import getPost from './getPost.js';
 import updatePost from './updatePost.js';
 import deletePost from './deletePost.js';
+import likePost from './likePost.js';
+import dislikePost from './dislikePost.js';
 
-export { addPost, getPost, updatePost, deletePost };
+export { addPost, getPost, updatePost, deletePost, likePost, dislikePost };
