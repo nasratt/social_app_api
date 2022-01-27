@@ -15,7 +15,8 @@ const postSchema = new Schema(
     },
     likesCount: { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },
-    likes: { type: ObjectId, required: true, ref: 'User' }
+    likes: { type: [ObjectId], required: true, default: [], ref: 'User' },
+    authorId: { type: ObjectId, required: true, ref: 'User' }
   },
   { minimize: false, timestamps: true }
 );
