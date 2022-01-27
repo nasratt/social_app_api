@@ -7,7 +7,8 @@ import {
   deleteUserPost,
   likeUserPost,
   dislikeUserPost,
-  getUserAllPosts
+  getUserAllPosts,
+  shareUserPost
 } from '../controllers/post.controller.js';
 
 const postRouter = express.Router();
@@ -19,5 +20,6 @@ postRouter.put('/:id', updateUserPost);
 postRouter.delete('/:id', deleteUserPost);
 postRouter.post('/:id/like', likeUserPost);
 postRouter.post('/:id/dislike', dislikeUserPost);
+postRouter.post('/:id/share', shareUserPost);
 
 export default postRouter;

@@ -23,6 +23,12 @@ const postSchema = new Schema(
   { minimize: false, timestamps: true }
 );
 
+/**
+ * Async function which determines if a user is allowed to view a post.
+ * @param {String} userId ID of user to check if allowed
+ * @returns true/false
+ */
+
 postSchema.methods.isUserAllowedToView = async function (userId) {
   const postAuthor = await User.findById(this.authorId).exec();
 

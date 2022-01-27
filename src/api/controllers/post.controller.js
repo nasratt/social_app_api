@@ -11,7 +11,8 @@ import {
   deletePost,
   likePost,
   dislikePost,
-  getAllPosts
+  getAllPosts,
+  sharePost
 } from '../services/posts/index.js';
 
 const createPost = catchErrors(async (req, res) => {
@@ -104,6 +105,18 @@ const getUserAllPosts = catchErrors(async (req, res) => {
   });
 });
 
+const shareUserPost = catchErrors(async (req, res) => {
+  const { id: postId } = req.params;
+  const { tokenData } = req.body;
+
+  const sharedPost = await sharePost(tokenData.id, postId);
+  res.status(200).json({
+    success: true,
+    message: 'You successfully shared the post',
+    data: { sharedPost }
+  });
+});
+
 export {
   createPost,
   getUserPost,
@@ -111,5 +124,6 @@ export {
   deleteUserPost,
   likeUserPost,
   dislikeUserPost,
-  getUserAllPosts
+  getUserAllPosts,
+  shareUserPost
 };

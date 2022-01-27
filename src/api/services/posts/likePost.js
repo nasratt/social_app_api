@@ -13,7 +13,7 @@ const likePost = async (userId, postId) => {
   const post = await Post.findById(postId).exec();
   if (!post) throw new APIError(404, 'No post was found with given ID');
 
-  if (post.isUserAllowedToView(userId)) {
+  if (await post.isUserAllowedToView(userId)) {
     if (post.likes.includes(userId))
       throw new APIError(403, 'You have already liked the post');
     post.likes.addToSet(userId);

@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 
 import Post from '../../models/post.model.js';
+import User from '../../models/user.model.js';
 import APIError from '../../helpers/apiError.js';
 
-const getPost = async (userId, postId) => {
+const sharePost = async (userId, postId) => {
   if (!mongoose.isValidObjectId(userId))
     throw new APIError(400, 'Invalid user ID provided');
 
@@ -13,10 +14,16 @@ const getPost = async (userId, postId) => {
   const post = await Post.findById(postId).exec();
   if (!post) throw new APIError(404, 'No post was found with given ID');
 
+  if (post.authorId.toString === userId)
+    throw new APIError(403, 'You can not share your own post');
+
   if (await post.isUserAllowedToView(userId)) {
+    const user = await User.findById(userId).exec();
+    user.posts.push(post._id);
+    await user.save();
     return post;
   }
-  throw new APIError(403, 'You are not allowed to view the post');
+  throw new APIError(403, 'You are not allowed to share the post');
 };
 
-export default getPost;
+export default sharePost;

@@ -5,6 +5,7 @@ import deletePost from './deletePost.js';
 import likePost from './likePost.js';
 import dislikePost from './dislikePost.js';
 import getAllPosts from './getAllPosts.js';
+import sharePost from './sharePost.js';
 
 export {
   addPost,
@@ -13,5 +14,6 @@ export {
   deletePost,
   likePost,
   dislikePost,
-  getAllPosts
+  getAllPosts,
+  sharePost
 };
