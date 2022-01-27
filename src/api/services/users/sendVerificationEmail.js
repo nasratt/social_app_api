@@ -3,14 +3,10 @@ import axios from 'axios';
 
 const generateLink = async (id) => {
   const { BASE_URL } = process.env;
-  try {
-    const token = await jwt.sign({ id }, process.env.JWT_SECRET, {
-      expiresIn: 3600
-    });
-    return `${BASE_URL}/users/verify-email?secret=${token}`;
-  } catch (err) {
-    console.log(err.message);
-  }
+  const token = await jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: 3600
+  });
+  return `${BASE_URL}/users/verify-email?secret=${token}`;
 };
 
 const generateEmail = async (id) => {
@@ -31,20 +27,17 @@ const generateEmail = async (id) => {
 const sendVerificationEmail = async (from, subject, user) => {
   const { MAILER_URL } = process.env;
   const { text, markup: html } = await generateEmail(user._id);
-  try {
-    const info = await axios.post(
-      MAILER_URL,
-      JSON.stringify({ from, reciever: user.email, subject, text, html }),
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+
+  const info = await axios.post(
+    MAILER_URL,
+    JSON.stringify({ from, reciever: user.email, subject, text, html }),
+    {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    );
-    return info;
-  } catch (err) {
-    throw err;
-  }
+    }
+  );
+  return info;
 };
 
 export default sendVerificationEmail;
