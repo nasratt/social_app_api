@@ -123,4 +123,23 @@ const postSchema = Joi.object({
 //   })
 // });
 
-export { signupSchema, resetPassSchema, userUpdateSchema, postSchema };
+const pageLimitSchema = Joi.object({
+  page: Joi.string()
+    .pattern(/^[0-9]*$/)
+    .messages({
+      '*': '{{#label}} should be a string of numbers'
+    }),
+  limit: Joi.string()
+    .pattern(/^[0-9]*$/)
+    .messages({
+      '*': '{{#label}} should be a string of numbers'
+    })
+});
+
+export {
+  signupSchema,
+  resetPassSchema,
+  userUpdateSchema,
+  postSchema,
+  pageLimitSchema
+};

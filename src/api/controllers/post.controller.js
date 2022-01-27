@@ -1,13 +1,17 @@
 import APIError from '../helpers/apiError.js';
 import catchErrors from '../helpers/catchErrors.js';
-import { postSchema } from '../validations/validationSchema.js';
+import {
+  postSchema,
+  pageLimitSchema
+} from '../validations/validationSchema.js';
 import {
   addPost,
   getPost,
   updatePost,
   deletePost,
   likePost,
-  dislikePost
+  dislikePost,
+  getAllPosts
 } from '../services/posts/index.js';
 
 const createPost = catchErrors(async (req, res) => {
@@ -85,11 +89,27 @@ const dislikeUserPost = catchErrors(async (req, res) => {
   });
 });
 
+const getUserAllPosts = catchErrors(async (req, res) => {
+  const { tokenData } = req.body;
+  const { page, limit } = req.query;
+  const validationResult = pageLimitSchema.validate({ page, limit });
+  if (validationResult.error)
+    throw new APIError(400, validationResult.error.details[0].message);
+
+  const posts = await getAllPosts(tokenData.id, +page || 1, +limit || 20);
+  res.status(200).json({
+    success: true,
+    message: 'Posts were successfully fetched',
+    data: { posts }
+  });
+});
+
 export {
   createPost,
   getUserPost,
   updateUserPost,
   deleteUserPost,
   likeUserPost,
-  dislikeUserPost
+  dislikeUserPost,
+  getUserAllPosts
 };

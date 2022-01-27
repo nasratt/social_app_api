@@ -6,11 +6,13 @@ import {
   updateUserPost,
   deleteUserPost,
   likeUserPost,
-  dislikeUserPost
+  dislikeUserPost,
+  getUserAllPosts
 } from '../controllers/post.controller.js';
 
 const postRouter = express.Router();
 
+postRouter.get('/', getUserAllPosts);
 postRouter.post('/', createPost);
 postRouter.get('/:id', getUserPost);
 postRouter.put('/:id', updateUserPost);
