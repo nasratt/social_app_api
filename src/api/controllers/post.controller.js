@@ -22,7 +22,7 @@ const createPost = catchErrors(async (req, res) => {
   if (validationResult.error)
     throw new APIError(400, validationResult.error.details[0].message);
 
-  const newPost = await addPost(tokenData.id, req.body);
+  const newPost = await addPost(tokenData.id, postData);
 
   res.status(200).json({
     success: true,
