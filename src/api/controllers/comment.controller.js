@@ -1,10 +1,13 @@
 import catchErrors from '../helpers/catchErrors.js';
+import { pageLimitSchema } from '../validations/validationSchema.js';
 import {
   addComment,
   getComment,
   updateComment,
-  deleteComment
+  deleteComment,
+  getAllComments
 } from '../services/comments/index.js';
+import APIError from '../helpers/apiError.js';
 
 const createPostComment = catchErrors(async (req, res) => {
   const { id: postId } = req.params;
@@ -58,7 +61,27 @@ const deletePostComment = catchErrors(async (req, res) => {
   });
 });
 
-const getPostAllComments = catchErrors(async (req, res) => {});
+const getPostAllComments = catchErrors(async (req, res) => {
+  const { page, limit } = req.query;
+  const { tokenData } = req.body;
+  const { id: postId } = req.params;
+
+  const validationResult = pageLimitSchema.validate({ page, limit });
+  if (validationResult.error)
+    throw new APIError(400, validationResult.error.details[0].message);
+
+  const comments = await getAllComments(
+    tokenData.id,
+    postId,
+    +page || 1,
+    +limit || 20
+  );
+  res.status(200).json({
+    success: true,
+    message: 'Comments were successfully fetched',
+    data: { comments }
+  });
+});
 
 export {
   createPostComment,

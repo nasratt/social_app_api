@@ -107,12 +107,12 @@ const pageLimitSchema = Joi.object({
   page: Joi.string()
     .pattern(/^[0-9]*$/)
     .messages({
-      '*': '{{#label}} should be a string of numbers'
+      '*': '{{#label}} should be a positive number'
     }),
   limit: Joi.string()
     .pattern(/^[0-9]*$/)
     .messages({
-      '*': '{{#label}} should be a string of numbers'
+      '*': '{{#label}} should be a positive number'
     })
 });
 
