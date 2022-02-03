@@ -14,6 +14,7 @@ const getAllComments = async (userId, postId, page = 1, limit = 20) => {
     throw new APIError(400, 'Invalid post ID provided');
 
   const post = await Post.findById(postId).exec();
+
   if (await post.isUserAllowedToView(userId)) {
     const offset = limit * (page - 1);
     const comments = await Comment.aggregate([

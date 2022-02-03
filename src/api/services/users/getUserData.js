@@ -11,11 +11,17 @@ const getUserData = async (id, loggedInId) => {
     { _id: id },
     { hash: false, createdAt: false, updatedAt: false, __v: false }
   ).exec();
-  if (!user) throw new APIError(404, 'No user was found with given ID');
+  if (!user || user.blocked.includes(loggedInId))
+    throw new APIError(404, 'No user was found with given ID');
 
   return id === loggedInId
     ? user
-    : { _id: user._id, fname: user.fname, lname: user.lname };
+    : {
+        _id: user._id,
+        fname: user.fname,
+        lname: user.lname,
+        profilePic: user.profilePic
+      };
 };
 
 export default getUserData;
