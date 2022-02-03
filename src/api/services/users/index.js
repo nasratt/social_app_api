@@ -3,11 +3,15 @@ import verifyUserEmail from './verifyUserEmail.js';
 import getUserData from './getUserData.js';
 import updateUserData from './updateUserData.js';
 import fetchUsersData from './fetchUsersData.js';
+import sendPasswordResetEmail from './sendPasswordResetEmail.js';
+import resetUserPassword from './resetUserPassword.js';
 
 export {
+  sendPasswordResetEmail,
   sendVerificationEmail,
   verifyUserEmail,
   getUserData,
   updateUserData,
-  fetchUsersData
+  fetchUsersData,
+  resetUserPassword
 };

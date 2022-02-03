@@ -3,10 +3,7 @@ import bcrypt from 'bcryptjs';
 
 import User from '../models/user.model.js';
 import APIError from '../helpers/apiError.js';
-import {
-  signupSchema,
-  resetPassSchema
-} from '../validations/validationSchema.js';
+import { signupSchema } from '../validations/validationSchema.js';
 
 const validateSignupBody = (req, res, next) => {
   const result = signupSchema.validate(req.body);
@@ -105,31 +102,10 @@ const verifyLoginCredentials = async (req, res, next) => {
   }
 };
 
-const validateResetPassword = async (req, res, next) => {
-  const { email } = req.body;
-  try {
-    const result = resetPassSchema.validate(req.body);
-
-    if (result.error) throw new APIError(400, result.error.details[0].message);
-
-    const user = await User.findOne({ email }).exec();
-    if (!user) throw new APIError(400, 'Invalid email provided');
-
-    if (!user.verified)
-      throw new APIError(409, 'Email is not verified, cannot reset password');
-    req.body.id = user._id;
-
-    next();
-  } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
-  }
-};
-
 export {
   checkDuplicateEmail,
   validateSignupBody,
   verifyDecodeJWT,
   verifyLoginCredentials,
-  verifyDecodeBearerToken,
-  validateResetPassword
+  verifyDecodeBearerToken
 };

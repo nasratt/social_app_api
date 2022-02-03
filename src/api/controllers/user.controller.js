@@ -4,13 +4,18 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import catchErrors from '../helpers/catchErrors.js';
 import APIError from '../helpers/apiError.js';
-import { pageLimitSchema } from '../validations/validationSchema.js';
+import {
+  pageLimitSchema,
+  emailSchema
+} from '../validations/validationSchema.js';
 import {
   sendVerificationEmail,
   verifyUserEmail,
   getUserData,
   updateUserData,
-  fetchUsersData
+  fetchUsersData,
+  sendPasswordResetEmail,
+  resetUserPassword
 } from '../services/users/index.js';
 
 const signupUser = catchErrors(async (req, res) => {
@@ -117,12 +122,22 @@ const findUsers = catchErrors(async (req, res) => {
   });
 });
 
+const sendPasswordResetLink = catchErrors(async (req, res) => {
+  const { email } = req.body;
+  const result = emailSchema.validate(email);
+  if (result.error) throw new APIError(400, result.error.details[0].message);
+
+  await sendPasswordResetEmail('Social App API', 'Password Reset', email);
+  res.status(200).json({
+    success: true,
+    message: 'Please check your email to reset your password'
+  });
+});
+
 const resetPassword = catchErrors(async (req, res) => {
-  const { id, password } = req.body;
+  const { token, password } = req.body;
 
-  const result = await updateUserData(id, { password });
-
-  if (!result.success) throw new Error(result);
+  await resetUserPassword(token, password);
   res
     .status(200)
     .json({ success: true, message: 'Password was successfully reset' });
@@ -135,5 +150,6 @@ export {
   sendUserData,
   updateUser,
   findUsers,
-  resetPassword
+  resetPassword,
+  sendPasswordResetLink
 };

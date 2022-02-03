@@ -22,7 +22,7 @@ const signupSchema = Joi.object({
   }),
   password: Joi.string()
     .pattern(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~$()*+/\\?[]\^\|])[A-Za-z\d-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|]{8,}$/i
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|])[A-Za-z\d\-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|]{8,}$/i
     )
     .messages({
       '*': 'password should be at least 8 characters long, and contain min one digit and one special symbol'
@@ -35,7 +35,7 @@ const resetPassSchema = Joi.object({
   }),
   password: Joi.string()
     .pattern(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~$()*+/\\?[]\^\|])[A-Za-z\d-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|]{8,}$/i
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|])[A-Za-z\d\-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|]{8,}$/i
     )
     .messages({
       '*': 'password should be at least 8 characters long, and contain min one digit and one special symbol'
@@ -63,7 +63,7 @@ const userUpdateSchema = Joi.object({
   // .message('email is not valid')
   password: Joi.string()
     .pattern(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~$()*+/\\?[]\^\|])[A-Za-z\d-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|]{8,}$/i
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|])[A-Za-z\d\-._!"`'#%&,:;<>=@{}~$()*+/\\?[\]^|]{8,}$/i
     )
     .messages({
       '*': 'password should be at least 8 characters long, and contain min one digit and one special symbol'
@@ -120,11 +120,18 @@ const commentSchema = Joi.object({
   body: Joi.string().min(1).max(500).required()
 });
 
+const emailSchema = Joi.string().email().required().messages({
+  'string.base': '{{#lable}} should be a string',
+  'string.email': '{{#lable}} should be a valid email',
+  'any.required': '{{#label}} is required'
+});
+
 export {
   signupSchema,
   resetPassSchema,
   userUpdateSchema,
   postSchema,
   pageLimitSchema,
-  commentSchema
+  commentSchema,
+  emailSchema
 };

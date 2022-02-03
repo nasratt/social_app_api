@@ -7,15 +7,15 @@ import {
   sendUserData,
   updateUser,
   findUsers,
-  resetPassword
+  resetPassword,
+  sendPasswordResetLink
 } from '../controllers/user.controller.js';
 import {
   checkDuplicateEmail,
   validateSignupBody,
   verifyDecodeJWT,
   verifyLoginCredentials,
-  verifyDecodeBearerToken,
-  validateResetPassword
+  verifyDecodeBearerToken
 } from '../middlewares/user.middleware.js';
 
 const userRouter = express.Router();
@@ -30,7 +30,8 @@ userRouter.post(
 userRouter.get('/verify-email', verifyDecodeJWT, verifyEmail);
 userRouter.post('/login', verifyLoginCredentials, loginUser);
 userRouter.get('/search', verifyDecodeBearerToken, findUsers);
-userRouter.post('/forgot-password', validateResetPassword, resetPassword);
+userRouter.post('/forgot-password', sendPasswordResetLink);
+userRouter.post('/reset-password', resetPassword);
 userRouter.get('/:id', verifyDecodeBearerToken, sendUserData);
 userRouter.put('/:id', verifyDecodeBearerToken, updateUser);
 
