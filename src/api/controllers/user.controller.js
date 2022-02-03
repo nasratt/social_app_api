@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import catchErrors from '../helpers/catchErrors.js';
 import APIError from '../helpers/apiError.js';
+import { pageLimitSchema } from '../validations/validationSchema.js';
 import {
   sendVerificationEmail,
   verifyUserEmail,
@@ -94,10 +95,20 @@ const updateUser = catchErrors(async (req, res) => {
 
 const findUsers = catchErrors(async (req, res) => {
   const { name, email, page, limit } = req.query;
+  const { tokenData } = req.body;
 
-  if (!name && !email) throw new APIError(400, 'Please provide a search term');
+  if (!name && !email)
+    throw new APIError(
+      400,
+      'Please provide a search term, either email or name'
+    );
 
-  const usersFound = await fetchUsersData(name, email, +page, +limit);
+  const validationResult = pageLimitSchema.validate({ page, limit });
+  if (validationResult.error)
+    throw new APIError(400, validationResult.error.details[0].message);
+
+  const queryOptions = { name, email, page: +page || 1, limit: +limit || 20 };
+  const usersFound = await fetchUsersData(tokenData.id, queryOptions);
 
   res.status(200).json({
     success: true,
