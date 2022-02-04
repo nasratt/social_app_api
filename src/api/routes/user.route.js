@@ -8,7 +8,8 @@ import {
   updateUser,
   findUsers,
   resetPassword,
-  sendPasswordResetLink
+  sendPasswordResetLink,
+  changeProfileVisibility
 } from '../controllers/user.controller.js';
 import {
   checkDuplicateEmail,
@@ -20,8 +21,6 @@ import {
 
 const userRouter = express.Router();
 
-// TODO: blocked list should be considered in /search and /:id
-
 userRouter.post(
   '/signup',
   [validateSignupBody, checkDuplicateEmail],
@@ -32,6 +31,11 @@ userRouter.post('/login', verifyLoginCredentials, loginUser);
 userRouter.get('/search', verifyDecodeBearerToken, findUsers);
 userRouter.post('/forgot-password', sendPasswordResetLink);
 userRouter.post('/reset-password', resetPassword);
+userRouter.get(
+  '/profile-visibility',
+  verifyDecodeBearerToken,
+  changeProfileVisibility
+);
 userRouter.get('/:id', verifyDecodeBearerToken, sendUserData);
 userRouter.put('/:id', verifyDecodeBearerToken, updateUser);
 

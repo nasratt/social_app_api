@@ -17,6 +17,11 @@ const userSchema = new Schema(
     email: { type: String, unique: true },
     hash: String,
     profilePic: { type: String, default: '' },
+    visibility: {
+      type: String,
+      default: 'public',
+      enum: ['public', 'private']
+    },
     verified: { type: Boolean, default: false },
     friends: { type: [ObjectId], default: [], ref: 'User' },
     inRequests: { type: [ObjectId], default: [], ref: 'User' },

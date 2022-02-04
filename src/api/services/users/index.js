@@ -5,6 +5,7 @@ import updateUserData from './updateUserData.js';
 import fetchUsersData from './fetchUsersData.js';
 import sendPasswordResetEmail from './sendPasswordResetEmail.js';
 import resetUserPassword from './resetUserPassword.js';
+import setProfileVisibility from './setProfileVisibility.js';
 
 export {
   sendPasswordResetEmail,
@@ -13,5 +14,6 @@ export {
   getUserData,
   updateUserData,
   fetchUsersData,
-  resetUserPassword
+  resetUserPassword,
+  setProfileVisibility
 };

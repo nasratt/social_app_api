@@ -15,7 +15,8 @@ import {
   updateUserData,
   fetchUsersData,
   sendPasswordResetEmail,
-  resetUserPassword
+  resetUserPassword,
+  setProfileVisibility
 } from '../services/users/index.js';
 
 const signupUser = catchErrors(async (req, res) => {
@@ -143,6 +144,25 @@ const resetPassword = catchErrors(async (req, res) => {
     .json({ success: true, message: 'Password was successfully reset' });
 });
 
+const changeProfileVisibility = catchErrors(async (req, res) => {
+  const { visibility } = req.query;
+  const { tokenData } = req.body;
+  if (!['public', 'private'].includes(visibility))
+    throw new APIError(
+      400,
+      'Visibility should be set as either "public" or "private"'
+    );
+
+  const updatedUser = await setProfileVisibility(tokenData.id, visibility);
+  res.status(200).json({
+    success: true,
+    message: 'Your profile visibility was successfully changed',
+    data: {
+      user: updatedUser
+    }
+  });
+});
+
 export {
   signupUser,
   verifyEmail,
@@ -151,5 +171,6 @@ export {
   updateUser,
   findUsers,
   resetPassword,
-  sendPasswordResetLink
+  sendPasswordResetLink,
+  changeProfileVisibility
 };
