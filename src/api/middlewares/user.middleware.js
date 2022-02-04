@@ -51,7 +51,7 @@ const verifyDecodeJWT = async (req, res, next) => {
   }
 };
 
-const verifyDecodeBearerToken = async (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization) {
     res.status(400).json({ success: false, message: 'No token provided' });
@@ -107,5 +107,5 @@ export {
   validateSignupBody,
   verifyDecodeJWT,
   verifyLoginCredentials,
-  verifyDecodeBearerToken
+  verifyToken
 };

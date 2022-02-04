@@ -6,7 +6,7 @@ import connectDB from './config/dbConnect.js';
 import userRouter from './api/routes/user.route.js';
 import friendsRouter from './api/routes/friends.route.js';
 import postRouter from './api/routes/post.route.js';
-import { verifyDecodeBearerToken } from './api/middlewares/user.middleware.js';
+import { verifyToken } from './api/middlewares/user.middleware.js';
 
 // ****** Basic Setup *******
 dotenv.config();
@@ -21,10 +21,10 @@ connectDB();
 // ****** Routes *******
 app.use('/users', userRouter);
 
-app.use('/friends', verifyDecodeBearerToken);
+app.use('/friends', verifyToken);
 app.use('/friends', friendsRouter);
 
-app.use('/posts', verifyDecodeBearerToken);
+app.use('/posts', verifyToken);
 app.use('/posts', postRouter);
 
 export default app;

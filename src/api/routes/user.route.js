@@ -16,7 +16,7 @@ import {
   validateSignupBody,
   verifyDecodeJWT,
   verifyLoginCredentials,
-  verifyDecodeBearerToken
+  verifyToken
 } from '../middlewares/user.middleware.js';
 
 const userRouter = express.Router();
@@ -28,15 +28,11 @@ userRouter.post(
 );
 userRouter.get('/verify-email', verifyDecodeJWT, verifyEmail);
 userRouter.post('/login', verifyLoginCredentials, loginUser);
-userRouter.get('/search', verifyDecodeBearerToken, findUsers);
+userRouter.get('/search', verifyToken, findUsers);
 userRouter.post('/forgot-password', sendPasswordResetLink);
 userRouter.post('/reset-password', resetPassword);
-userRouter.get(
-  '/profile-visibility',
-  verifyDecodeBearerToken,
-  changeProfileVisibility
-);
-userRouter.get('/:id', verifyDecodeBearerToken, sendUserData);
-userRouter.put('/:id', verifyDecodeBearerToken, updateUser);
+userRouter.get('/profile-visibility', verifyToken, changeProfileVisibility);
+userRouter.get('/:id', verifyToken, sendUserData);
+userRouter.put('/:id', verifyToken, updateUser);
 
 export default userRouter;
