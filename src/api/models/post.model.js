@@ -34,8 +34,9 @@ postSchema.methods.isUserAllowedToView = async function (userId) {
 
   if (this.authorId.toString() === userId) return true;
   return (
-    this.visibility === 'public' ||
-    (this.visibility === 'friends' && postAuthor.friends.includes(userId))
+    (this.visibility === 'public' && postAuthor.visibility === 'public') ||
+    (/public|friends/i.test(this.visibility) &&
+      postAuthor.friends.includes(userId))
   );
 };
 

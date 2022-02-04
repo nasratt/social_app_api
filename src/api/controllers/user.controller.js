@@ -73,7 +73,7 @@ const sendUserData = catchErrors(async (req, res) => {
   const { tokenData } = req.body;
   if (!id) throw new APIError(400, 'No ID provided');
 
-  const user = await getUserData(id, tokenData.id);
+  const user = await getUserData(tokenData.id, id);
   res.status(200).json({
     success: true,
     message: 'User profile data was successfully fetched',
