@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import connectDB from './config/dbConnect.js';
 import userRouter from './api/routes/user.route.js';
@@ -15,6 +16,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Image upload proxy
+const { IMG_UPLOAD_URL } = process.env;
+const imageProxy = createProxyMiddleware('/', { target: IMG_UPLOAD_URL });
 // Connecting to DB
 connectDB();
 
@@ -26,5 +30,8 @@ app.use('/friends', friendsRouter);
 
 app.use('/posts', verifyToken);
 app.use('/posts', postRouter);
+
+app.use('/images', verifyToken);
+app.use('/images', imageProxy);
 
 export default app;
