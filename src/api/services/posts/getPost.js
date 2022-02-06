@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Post from '../../models/post.model.js';
-import APIError from '../../helpers/apiError.js';
+const Post = require('../../models/post.model');
+const APIError = require('../../helpers/apiError');
 
 const getPost = async (userId, postId) => {
   if (!mongoose.isValidObjectId(userId))
@@ -19,4 +19,4 @@ const getPost = async (userId, postId) => {
   throw new APIError(403, 'You are not allowed to view the post');
 };
 
-export default getPost;
+module.exports = getPost;

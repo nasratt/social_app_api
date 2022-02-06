@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
-import unFriend from './unFriend.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
+const unFriend = require('./unFriend');
 
 const block = async (userId, blockId) => {
   if (!mongoose.isValidObjectId(userId))
@@ -23,4 +23,4 @@ const block = async (userId, blockId) => {
   await user.save();
 };
 
-export default block;
+module.exports = block;

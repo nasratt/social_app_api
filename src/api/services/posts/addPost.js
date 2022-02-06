@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Post from '../../models/post.model.js';
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const Post = require('../../models/post.model');
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const addPost = async (userId, post) => {
   if (!mongoose.isValidObjectId(userId))
@@ -19,4 +19,4 @@ const addPost = async (userId, post) => {
   return doc;
 };
 
-export default addPost;
+module.exports = addPost;

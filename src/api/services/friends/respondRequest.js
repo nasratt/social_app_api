@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 /**
  * Responds to friend request by either accepting or rejecting it.
@@ -38,4 +38,4 @@ const respondRequest = async (userId, requesterId, accept = true) => {
   await Promise.all([user.save(), requester.save()]);
 };
 
-export default respondRequest;
+module.exports = respondRequest;

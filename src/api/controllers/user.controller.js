@@ -1,14 +1,14 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-import User from '../models/user.model.js';
-import catchErrors from '../helpers/catchErrors.js';
-import APIError from '../helpers/apiError.js';
-import {
+const User = require('../models/user.model');
+const catchErrors = require('../helpers/catchErrors');
+const APIError = require('../helpers/apiError');
+const {
   pageLimitSchema,
   emailSchema
-} from '../validations/validationSchema.js';
-import {
+} = require('../validations/validationSchema');
+const {
   sendVerificationEmail,
   verifyUserEmail,
   getUserData,
@@ -17,9 +17,9 @@ import {
   sendPasswordResetEmail,
   resetUserPassword,
   setProfileVisibility
-} from '../services/users/index.js';
+} = require('../services/users');
 
-import { setNotificationStatus } from '../services/notifications/index.js';
+const { setNotificationStatus } = require('../services/notifications');
 
 const signupUser = catchErrors(async (req, res) => {
   const { fname, lname, email, password } = req.body;
@@ -179,7 +179,7 @@ const changeNotificationStatus = catchErrors(async (req, res) => {
   });
 });
 
-export {
+module.exports = {
   signupUser,
   verifyEmail,
   loginUser,

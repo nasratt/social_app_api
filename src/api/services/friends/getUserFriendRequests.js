@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const getUserFriendRequests = async (userId) => {
   if (!mongoose.isValidObjectId(userId))
@@ -14,4 +14,4 @@ const getUserFriendRequests = async (userId) => {
   return user.inRequests;
 };
 
-export default getUserFriendRequests;
+module.exports = getUserFriendRequests;

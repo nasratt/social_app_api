@@ -1,4 +1,4 @@
-import {
+const {
   getUserFriends,
   sendRequest,
   respondRequest,
@@ -7,9 +7,9 @@ import {
   suggestFriends,
   block,
   unBlock
-} from '../services/friends/index.js';
+} = require('../services/friends');
 
-import catchErrors from '../helpers/catchErrors.js';
+const catchErrors = require('../helpers/catchErrors');
 
 const sendFriendRequest = catchErrors(async (req, res) => {
   const {
@@ -134,7 +134,7 @@ const unBlockUser = catchErrors(async (req, res) => {
   });
 });
 
-export {
+module.exports = {
   getAllFriends,
   sendFriendRequest,
   acceptFriendRequest,

@@ -1,12 +1,12 @@
-import express from 'express';
+const express = require('express');
 
-import {
+const {
   createPostComment,
   getPostComment,
   updatePostComment,
   deletePostComment,
   getPostAllComments
-} from '../controllers/comment.controller.js';
+} = require('../controllers/comment.controller');
 
 const commentRouter = express.Router({ mergeParams: true });
 
@@ -20,4 +20,4 @@ commentRouter.put('/:cid', updatePostComment);
 
 commentRouter.delete('/:cid', deletePostComment);
 
-export default commentRouter;
+module.exports = commentRouter;

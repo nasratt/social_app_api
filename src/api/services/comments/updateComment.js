@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Comment from '../../models/comment.model.js';
-import APIError from '../../helpers/apiError.js';
-import { commentSchema } from '../../validations/validationSchema.js';
+const Comment = require('../../models/comment.model');
+const APIError = require('../../helpers/apiError');
+const { commentSchema } = require('../../validations/validationSchema');
 
 const updateComment = async (userId, postId, commentId, commentData) => {
   const validationResult = commentSchema.validate(commentData);
@@ -27,4 +27,4 @@ const updateComment = async (userId, postId, commentId, commentData) => {
   return updatedDoc;
 };
 
-export default updateComment;
+module.exports = updateComment;

@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import APIError from '../../helpers/apiError.js';
-import User from '../../models/user.model.js';
+const APIError = require('../../helpers/apiError');
+const User = require('../../models/user.model');
 
 const { ObjectId } = mongoose.Types;
 
@@ -19,4 +19,4 @@ const setProfileVisibility = async (userId, value) => {
   return updatedUser;
 };
 
-export default setProfileVisibility;
+module.exports = setProfileVisibility;

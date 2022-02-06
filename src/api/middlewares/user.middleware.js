@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-import User from '../models/user.model.js';
-import APIError from '../helpers/apiError.js';
-import { signupSchema } from '../validations/validationSchema.js';
+const User = require('../models/user.model');
+const APIError = require('../helpers/apiError');
+const { signupSchema } = require('../validations/validationSchema');
 
 const validateSignupBody = (req, res, next) => {
   const result = signupSchema.validate(req.body);
@@ -102,7 +102,7 @@ const verifyLoginCredentials = async (req, res, next) => {
   }
 };
 
-export {
+module.exports = {
   checkDuplicateEmail,
   validateSignupBody,
   verifyDecodeJWT,

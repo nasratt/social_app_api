@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Post from '../../models/post.model.js';
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const Post = require('../../models/post.model');
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const sharePost = async (userId, postId) => {
   if (!mongoose.isValidObjectId(userId))
@@ -26,4 +26,4 @@ const sharePost = async (userId, postId) => {
   throw new APIError(403, 'You are not allowed to share the post');
 };
 
-export default sharePost;
+module.exports = sharePost;

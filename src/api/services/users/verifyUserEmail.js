@@ -1,4 +1,4 @@
-import User from '../../models/user.model.js';
+const User = require('../../models/user.model');
 
 const verifyUserEmail = async (id) => {
   const user = await User.findById(id);
@@ -6,4 +6,4 @@ const verifyUserEmail = async (id) => {
   await user.save();
 };
 
-export default verifyUserEmail;
+module.exports = verifyUserEmail;

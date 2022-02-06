@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Post from '../../models/post.model.js';
-import APIError from '../../helpers/apiError.js';
+const Post = require('../../models/post.model');
+const APIError = require('../../helpers/apiError');
 
 const getAllPosts = async (userId, page = 1, limit = 20) => {
   if (!mongoose.isValidObjectId(userId))
@@ -17,4 +17,4 @@ const getAllPosts = async (userId, page = 1, limit = 20) => {
   return posts;
 };
 
-export default getAllPosts;
+module.exports = getAllPosts;

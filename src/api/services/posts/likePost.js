@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Post from '../../models/post.model.js';
-import APIError from '../../helpers/apiError.js';
+const Post = require('../../models/post.model');
+const APIError = require('../../helpers/apiError');
 
 const likePost = async (userId, postId) => {
   if (!mongoose.isValidObjectId(userId))
@@ -22,4 +22,4 @@ const likePost = async (userId, postId) => {
   throw new APIError(403, 'You are not allowed to like the post');
 };
 
-export default likePost;
+module.exports = likePost;

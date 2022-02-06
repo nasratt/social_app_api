@@ -1,10 +1,10 @@
-import APIError from '../helpers/apiError.js';
-import catchErrors from '../helpers/catchErrors.js';
-import {
+const APIError = require('../helpers/apiError');
+const catchErrors = require('../helpers/catchErrors');
+const {
   postSchema,
   pageLimitSchema
-} from '../validations/validationSchema.js';
-import {
+} = require('../validations/validationSchema');
+const {
   addPost,
   getPost,
   updatePost,
@@ -13,7 +13,7 @@ import {
   dislikePost,
   getAllPosts,
   sharePost
-} from '../services/posts/index.js';
+} = require('../services/posts');
 
 const createPost = catchErrors(async (req, res) => {
   const { tokenData, ...postData } = req.body;
@@ -117,7 +117,7 @@ const shareUserPost = catchErrors(async (req, res) => {
   });
 });
 
-export {
+module.exports = {
   createPost,
   getUserPost,
   updateUserPost,

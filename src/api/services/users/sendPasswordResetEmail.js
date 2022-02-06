@@ -1,8 +1,8 @@
-import jwt from 'jsonwebtoken';
-import axios from 'axios';
+const jwt = require('jsonwebtoken');
+const axios = require('axios');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const generateEmail = async (userEmail) => {
   const token = await jwt.sign({ email: userEmail }, process.env.JWT_SECRET, {
@@ -41,4 +41,4 @@ const sendPasswordResetEmail = async (from, subject, userEmail) => {
   return info;
 };
 
-export default sendPasswordResetEmail;
+module.exports = sendPasswordResetEmail;

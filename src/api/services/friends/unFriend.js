@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 /**
  * Unfriends two users. If there is any error, it throws it, errors should be caught in callee.
@@ -30,4 +30,4 @@ const unFriend = async (userId, friendId) => {
   await Promise.all([user.save(), friend.save()]);
 };
 
-export default unFriend;
+module.exports = unFriend;

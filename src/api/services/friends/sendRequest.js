@@ -1,5 +1,5 @@
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const sendRequest = async (senderId, recieverId) => {
   const sender = await User.findById(senderId).exec();
@@ -34,4 +34,4 @@ const sendRequest = async (senderId, recieverId) => {
   await Promise.all([sender.save(), reciever.save()]);
 };
 
-export default sendRequest;
+module.exports = sendRequest;

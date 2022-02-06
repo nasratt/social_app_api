@@ -1,5 +1,5 @@
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const fetchUsersData = async (userId, queryOptions) => {
   const pattern = `.*${queryOptions.name}.*`;
@@ -37,4 +37,4 @@ const fetchUsersData = async (userId, queryOptions) => {
   return users;
 };
 
-export default fetchUsersData;
+module.exports = fetchUsersData;

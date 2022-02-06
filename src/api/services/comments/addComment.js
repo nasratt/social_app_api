@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Comment from '../../models/comment.model.js';
-import Post from '../../models/post.model.js';
-import APIError from '../../helpers/apiError.js';
-import { commentSchema } from '../../validations/validationSchema.js';
+const Comment = require('../../models/comment.model');
+const Post = require('../../models/post.model');
+const APIError = require('../../helpers/apiError');
+const { commentSchema } = require('../../validations/validationSchema');
 
 const addComment = async (userId, postId, comment) => {
   const validationResult = commentSchema.validate(comment);
@@ -30,4 +30,4 @@ const addComment = async (userId, postId, comment) => {
   throw new APIError(403, 'You are not allowed to comment on the post');
 };
 
-export default addComment;
+module.exports = addComment;

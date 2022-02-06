@@ -1,6 +1,6 @@
-import express from 'express';
+const express = require('express');
 
-import {
+const {
   createPost,
   getUserPost,
   updateUserPost,
@@ -9,8 +9,8 @@ import {
   dislikeUserPost,
   getUserAllPosts,
   shareUserPost
-} from '../controllers/post.controller.js';
-import commentRouter from './comment.route.js';
+} = require('../controllers/post.controller');
+const commentRouter = require('./comment.route');
 
 const postRouter = express.Router();
 
@@ -25,4 +25,4 @@ postRouter.post('/:id/share', shareUserPost);
 
 postRouter.use('/:id/comments', commentRouter);
 
-export default postRouter;
+module.exports = postRouter;

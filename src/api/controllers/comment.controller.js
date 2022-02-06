@@ -1,13 +1,13 @@
-import catchErrors from '../helpers/catchErrors.js';
-import { pageLimitSchema } from '../validations/validationSchema.js';
-import {
+const catchErrors = require('../helpers/catchErrors');
+const { pageLimitSchema } = require('../validations/validationSchema');
+const {
   addComment,
   getComment,
   updateComment,
   deleteComment,
   getAllComments
-} from '../services/comments/index.js';
-import APIError from '../helpers/apiError.js';
+} = require('../services/comments');
+const APIError = require('../helpers/apiError');
 
 const createPostComment = catchErrors(async (req, res) => {
   const { id: postId } = req.params;
@@ -83,7 +83,7 @@ const getPostAllComments = catchErrors(async (req, res) => {
   });
 });
 
-export {
+module.exports = {
   createPostComment,
   getPostComment,
   updatePostComment,

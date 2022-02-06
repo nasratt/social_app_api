@@ -1,7 +1,13 @@
-import addComment from './addComment.js';
-import getComment from './getComment.js';
-import updateComment from './updateComment.js';
-import deleteComment from './deleteComment.js';
-import getAllComments from './getAllComments.js';
+const addComment = require('./addComment');
+const getComment = require('./getComment');
+const updateComment = require('./updateComment');
+const deleteComment = require('./deleteComment');
+const getAllComments = require('./getAllComments');
 
-export { addComment, getComment, updateComment, deleteComment, getAllComments };
+module.exports = {
+  addComment,
+  getComment,
+  updateComment,
+  deleteComment,
+  getAllComments
+};

@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from '../../models/user.model.js';
+const User = require('../../models/user.model');
 
-import APIError from '../../helpers/apiError.js';
+const APIError = require('../../helpers/apiError');
 
 const unBlock = async (userId, blockedId) => {
   if (!mongoose.isValidObjectId(userId))
@@ -21,4 +21,4 @@ const unBlock = async (userId, blockedId) => {
   await user.save();
 };
 
-export default unBlock;
+module.exports = unBlock;

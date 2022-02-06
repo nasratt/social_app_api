@@ -1,13 +1,13 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { createProxyMiddleware } from 'http-proxy-middleware';
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
-import connectDB from './config/dbConnect.js';
-import userRouter from './api/routes/user.route.js';
-import friendsRouter from './api/routes/friends.route.js';
-import postRouter from './api/routes/post.route.js';
-import { verifyToken } from './api/middlewares/user.middleware.js';
+const connectDB = require('./config/dbConnect');
+const userRouter = require('./api/routes/user.route');
+const friendsRouter = require('./api/routes/friends.route');
+const postRouter = require('./api/routes/post.route');
+const { verifyToken } = require('./api/middlewares/user.middleware');
 
 // ****** Basic Setup *******
 dotenv.config();
@@ -34,4 +34,4 @@ app.use('/posts', postRouter);
 app.use('/images', verifyToken);
 app.use('/images', imageProxy);
 
-export default app;
+module.exports = app;

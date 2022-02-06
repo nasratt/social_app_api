@@ -1,5 +1,5 @@
-import APIError from '../../helpers/apiError.js';
-import User from '../../models/user.model.js';
+const APIError = require('../../helpers/apiError');
+const User = require('../../models/user.model');
 
 const setNotificationStatus = async (userId, status) => {
   const user = await User.findById(userId).exec();
@@ -9,4 +9,4 @@ const setNotificationStatus = async (userId, status) => {
   await user.save();
 };
 
-export default setNotificationStatus;
+module.exports = setNotificationStatus;

@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const getUserData = async (userId, searchId) => {
   if (!mongoose.isValidObjectId(searchId))
@@ -30,4 +30,4 @@ const getUserData = async (userId, searchId) => {
   };
 };
 
-export default getUserData;
+module.exports = getUserData;

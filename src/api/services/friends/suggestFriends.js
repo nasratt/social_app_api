@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const { ObjectId } = mongoose.Types;
 
@@ -85,4 +85,4 @@ const suggestFriends = async (userId, page = 1, limit = 50) => {
   return suggestions;
 };
 
-export default suggestFriends;
+module.exports = suggestFriends;

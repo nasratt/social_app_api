@@ -30,7 +30,7 @@
     "no-plusplus": "off",
     "no-process-exit": "off",
     "class-methods-use-this": "warn",
-    "import/extensions": ["warn", "ignorePackages"],
+    "import/extensions": ["warn", "never"],
     "linebreak-style": "off",
     "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   }

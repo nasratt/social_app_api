@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Post from '../../models/post.model.js';
-import Comment from '../../models/comment.model.js';
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const Post = require('../../models/post.model');
+const Comment = require('../../models/comment.model');
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 const deletePost = async (userId, postId) => {
   if (!mongoose.isValidObjectId(userId))
@@ -26,4 +26,4 @@ const deletePost = async (userId, postId) => {
   await Comment.deleteMany({ postId });
 };
 
-export default deletePost;
+module.exports = deletePost;

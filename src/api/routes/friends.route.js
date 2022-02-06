@@ -1,6 +1,6 @@
-import express from 'express';
+const express = require('express');
 
-import {
+const {
   getAllFriends,
   sendFriendRequest,
   acceptFriendRequest,
@@ -10,7 +10,7 @@ import {
   getFriendSuggestions,
   blockUser,
   unBlockUser
-} from '../controllers/friends.controller.js';
+} = require('../controllers/friends.controller');
 
 const friendsRouter = express.Router();
 
@@ -24,4 +24,4 @@ friendsRouter.post('/remove', removeFriend);
 friendsRouter.post('/block', blockUser);
 friendsRouter.post('/unblock', unBlockUser);
 
-export default friendsRouter;
+module.exports = friendsRouter;

@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from './user.model.js';
+const User = require('./user.model');
 
 const { Schema, model } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -41,4 +41,4 @@ postSchema.methods.isUserAllowedToView = async function (userId) {
 };
 
 const Post = model('Post', postSchema);
-export default Post;
+module.exports = Post;

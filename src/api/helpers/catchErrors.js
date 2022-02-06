@@ -11,4 +11,4 @@ const catchErrors = (fn) => {
   };
 };
 
-export default catchErrors;
+module.exports = catchErrors;

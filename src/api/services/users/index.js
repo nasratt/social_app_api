@@ -1,13 +1,13 @@
-import sendVerificationEmail from './sendVerificationEmail.js';
-import verifyUserEmail from './verifyUserEmail.js';
-import getUserData from './getUserData.js';
-import updateUserData from './updateUserData.js';
-import fetchUsersData from './fetchUsersData.js';
-import sendPasswordResetEmail from './sendPasswordResetEmail.js';
-import resetUserPassword from './resetUserPassword.js';
-import setProfileVisibility from './setProfileVisibility.js';
+const sendVerificationEmail = require('./sendVerificationEmail');
+const verifyUserEmail = require('./verifyUserEmail');
+const getUserData = require('./getUserData');
+const updateUserData = require('./updateUserData');
+const fetchUsersData = require('./fetchUsersData');
+const sendPasswordResetEmail = require('./sendPasswordResetEmail');
+const resetUserPassword = require('./resetUserPassword');
+const setProfileVisibility = require('./setProfileVisibility');
 
-export {
+module.exports = {
   sendPasswordResetEmail,
   sendVerificationEmail,
   verifyUserEmail,

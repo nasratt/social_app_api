@@ -1,4 +1,4 @@
-import Joi from 'joi';
+const Joi = require('joi');
 
 const signupSchema = Joi.object({
   fname: Joi.string()
@@ -126,7 +126,7 @@ const emailSchema = Joi.string().email().required().messages({
   'any.required': '{{#label}} is required'
 });
 
-export {
+module.exports = {
   signupSchema,
   resetPassSchema,
   userUpdateSchema,

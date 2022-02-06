@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Post from '../../models/post.model.js';
-import APIError from '../../helpers/apiError.js';
-import { postSchema } from '../../validations/validationSchema.js';
+const Post = require('../../models/post.model');
+const APIError = require('../../helpers/apiError');
+const { postSchema } = require('../../validations/validationSchema');
 
 const updatePost = async (userId, postId, updateData) => {
   // adding update for conditional schema
@@ -31,4 +31,4 @@ const updatePost = async (userId, postId, updateData) => {
   return updatedPost;
 };
 
-export default updatePost;
+module.exports = updatePost;

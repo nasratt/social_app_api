@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import axios from 'axios';
+const jwt = require('jsonwebtoken');
+const axios = require('axios');
 
 const generateLink = async (id) => {
   const { BASE_URL } = process.env;
@@ -40,4 +40,4 @@ const sendVerificationEmail = async (from, subject, user) => {
   return info;
 };
 
-export default sendVerificationEmail;
+module.exports = sendVerificationEmail;

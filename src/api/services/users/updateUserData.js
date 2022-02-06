@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
-import { userUpdateSchema } from '../../validations/validationSchema.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
+const { userUpdateSchema } = require('../../validations/validationSchema');
 
 const updateUserData = async (id, userObj) => {
   if (!mongoose.isValidObjectId(id))
@@ -38,4 +38,4 @@ const updateUserData = async (id, userObj) => {
   return newUserObj;
 };
 
-export default updateUserData;
+module.exports = updateUserData;

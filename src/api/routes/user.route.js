@@ -1,6 +1,6 @@
-import express from 'express';
+const express = require('express');
 
-import {
+const {
   signupUser,
   verifyEmail,
   loginUser,
@@ -11,14 +11,14 @@ import {
   sendPasswordResetLink,
   changeProfileVisibility,
   changeNotificationStatus
-} from '../controllers/user.controller.js';
-import {
+} = require('../controllers/user.controller');
+const {
   checkDuplicateEmail,
   validateSignupBody,
   verifyDecodeJWT,
   verifyLoginCredentials,
   verifyToken
-} from '../middlewares/user.middleware.js';
+} = require('../middlewares/user.middleware');
 
 const userRouter = express.Router();
 
@@ -37,4 +37,4 @@ userRouter.patch('/notifications', verifyToken, changeNotificationStatus);
 userRouter.get('/:id', verifyToken, sendUserData);
 userRouter.put('/:id', verifyToken, updateUser);
 
-export default userRouter;
+module.exports = userRouter;

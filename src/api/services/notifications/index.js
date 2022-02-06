@@ -1,3 +1,3 @@
-import setNotificationStatus from './setNotificationStatus.js';
+const setNotificationStatus = require('./setNotificationStatus');
 
-export { setNotificationStatus };
+module.exports = { setNotificationStatus };

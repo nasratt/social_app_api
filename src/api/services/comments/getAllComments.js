@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import Comment from '../../models/comment.model.js';
-import Post from '../../models/post.model.js';
-import APIError from '../../helpers/apiError.js';
+const Comment = require('../../models/comment.model');
+const Post = require('../../models/post.model');
+const APIError = require('../../helpers/apiError');
 
 const { ObjectId } = mongoose.Types;
 
@@ -41,4 +41,4 @@ const getAllComments = async (userId, postId, page = 1, limit = 20) => {
   throw new APIError(403, 'You are not allowed to view the comments');
 };
 
-export default getAllComments;
+module.exports = getAllComments;

@@ -1,9 +1,9 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-import APIError from '../../helpers/apiError.js';
-import User from '../../models/user.model.js';
-import { resetPassSchema } from '../../validations/validationSchema.js';
+const APIError = require('../../helpers/apiError');
+const User = require('../../models/user.model');
+const { resetPassSchema } = require('../../validations/validationSchema');
 
 const resetUserPassword = async (token, password) => {
   const { email } = await jwt.verify(token, process.env.JWT_SECRET);
@@ -22,4 +22,4 @@ const resetUserPassword = async (token, password) => {
   await user.save();
 };
 
-export default resetUserPassword;
+module.exports = resetUserPassword;

@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import User from '../../models/user.model.js';
-import APIError from '../../helpers/apiError.js';
+const User = require('../../models/user.model');
+const APIError = require('../../helpers/apiError');
 
 /**
  * Returns friends of a user in paginated format.
@@ -27,4 +27,4 @@ const getUserFriends = async (userId, page = 1, limit = 20) => {
   return user.friends;
 };
 
-export default getUserFriends;
+module.exports = getUserFriends;
