@@ -31,8 +31,8 @@ userRouter.post('/login', verifyLoginCredentials, loginUser);
 userRouter.get('/search', verifyToken, findUsers);
 userRouter.post('/forgot-password', sendPasswordResetLink);
 userRouter.post('/reset-password', resetPassword);
-userRouter.get('/profile-visibility', verifyToken, changeProfileVisibility);
-userRouter.get('/:id', verifyToken, sendUserData);
+userRouter.patch('/profile-visibility', verifyToken, changeProfileVisibility);
+userRouter.userRouter.get('/:id', verifyToken, sendUserData);
 userRouter.put('/:id', verifyToken, updateUser);
 
 export default userRouter;
