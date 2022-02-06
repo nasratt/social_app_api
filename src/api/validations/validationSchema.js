@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const signupSchema = Joi.object({
   fname: Joi.string()
-    .pattern(/^[a-zA-Z.]+$/i)
+    .pattern(/^[a-zA-Z. ]+$/i)
     .min(3)
     .max(30)
     .required()
@@ -10,7 +10,7 @@ const signupSchema = Joi.object({
       '*': `fname can only cotain alphabets and . (dot), and should be 3-30 characters long`
     }),
   lname: Joi.string()
-    .pattern(/^[a-zA-Z.]+$/i)
+    .pattern(/^[a-zA-Z. ]+$/i)
     .min(3)
     .max(30)
     .required()
@@ -44,14 +44,14 @@ const resetPassSchema = Joi.object({
 
 const userUpdateSchema = Joi.object({
   fname: Joi.string()
-    .pattern(/^[a-zA-Z.]+$/i)
+    .pattern(/^[a-zA-Z. ]+$/i)
     .min(3)
     .max(30)
     .messages({
       '*': `fname can only cotain alphabets and . (dot), and should be 3-30 characters long`
     }),
   lname: Joi.string()
-    .pattern(/^[a-zA-Z.]+$/i)
+    .pattern(/^[a-zA-Z. ]+$/i)
     .min(3)
     .max(30)
     .messages({

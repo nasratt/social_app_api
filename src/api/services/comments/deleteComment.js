@@ -15,7 +15,7 @@ const deleteComment = async (userId, postId, commentId) => {
 
   const comment = await Comment.findById(commentId).exec();
   if (comment.authorId.toString() !== userId)
-    throw new APIError(403, 'You are not allowed to edit the comment');
+    throw new APIError(403, 'You are not allowed to delete the comment');
   await comment.deleteOne();
   await Comment.deleteMany({ commentId });
 };

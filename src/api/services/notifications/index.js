@@ -1,3 +1,4 @@
 const setNotificationStatus = require('./setNotificationStatus');
+const notifyFriends = require('./notifyFriends');
 
-module.exports = { setNotificationStatus };
+module.exports = { setNotificationStatus, notifyFriends };

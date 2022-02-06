@@ -13,13 +13,13 @@ const dislikePost = async (userId, postId) => {
   const post = await Post.findById(postId).exec();
   if (!post) throw new APIError(404, 'No post was found with given ID');
 
-  if (await post.isUserAllowedToView(userId)) {
-    if (!post.likes.includes(userId))
-      throw new APIError(403, 'You have not liked the post');
-    post.likes.pull(userId);
-    await post.save();
-  }
-  throw new APIError(403, 'You are not allowed to dislike the post');
+  if (!(await post.isUserAllowedToView(userId)))
+    throw new APIError(403, 'You are not allowed to dislike the post');
+
+  if (!post.likes.includes(userId))
+    throw new APIError(403, 'You have not liked the post');
+  post.likes.pull(userId);
+  await post.save();
 };
 
 module.exports = dislikePost;

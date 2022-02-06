@@ -15,15 +15,15 @@ const getComment = async (userId, postId, commentId) => {
     throw new APIError(400, 'Invalid comment ID provided');
 
   const post = await Post.findById(postId).exec();
-  if (await post.isUserAllowedToView(userId)) {
-    const comment = await Comment.findById(commentId, { __v: false }).exec();
-    const replies = await Comment.find(
-      { commentId },
-      { __v: false, commentId: false }
-    ).exec();
-    return { ...comment.toObject(), replies };
-  }
-  throw new APIError(403, 'You are not allowed to view the comment');
+  if (!(await post.isUserAllowedToView(userId)))
+    throw new APIError(403, 'You are not allowed to view the comment');
+
+  const comment = await Comment.findById(commentId, { __v: false }).exec();
+  const replies = await Comment.find(
+    { commentId },
+    { __v: false, commentId: false }
+  ).exec();
+  return { ...comment.toObject(), replies };
 };
 
 module.exports = getComment;
