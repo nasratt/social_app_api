@@ -9,7 +9,8 @@ import {
   findUsers,
   resetPassword,
   sendPasswordResetLink,
-  changeProfileVisibility
+  changeProfileVisibility,
+  changeNotificationStatus
 } from '../controllers/user.controller.js';
 import {
   checkDuplicateEmail,
@@ -32,6 +33,7 @@ userRouter.get('/search', verifyToken, findUsers);
 userRouter.post('/forgot-password', sendPasswordResetLink);
 userRouter.post('/reset-password', resetPassword);
 userRouter.patch('/profile-visibility', verifyToken, changeProfileVisibility);
+userRouter.patch('/notifications', verifyToken, changeNotificationStatus);
 userRouter.userRouter.get('/:id', verifyToken, sendUserData);
 userRouter.put('/:id', verifyToken, updateUser);
 

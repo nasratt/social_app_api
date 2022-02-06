@@ -23,6 +23,7 @@ const userSchema = new Schema(
       enum: ['public', 'private']
     },
     verified: { type: Boolean, default: false },
+    notifications: { type: Boolean, default: true },
     friends: { type: [ObjectId], default: [], ref: 'User' },
     inRequests: { type: [ObjectId], default: [], ref: 'User' },
     outRequests: { type: [ObjectId], default: [], ref: 'User' },

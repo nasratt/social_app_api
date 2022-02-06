@@ -19,6 +19,8 @@ import {
   setProfileVisibility
 } from '../services/users/index.js';
 
+import { setNotificationStatus } from '../services/notifications/index.js';
+
 const signupUser = catchErrors(async (req, res) => {
   const { fname, lname, email, password } = req.body;
 
@@ -163,6 +165,20 @@ const changeProfileVisibility = catchErrors(async (req, res) => {
   });
 });
 
+const changeNotificationStatus = catchErrors(async (req, res) => {
+  const { status } = req.query;
+  const { tokenData } = req.body;
+
+  if (!/on|off/i.test(status))
+    throw new APIError(400, 'Status should be either "on" or "off"');
+
+  await setNotificationStatus(tokenData.id, status === 'on');
+  res.status(200).json({
+    success: true,
+    message: `Your notifications was successfully set to ${status}`
+  });
+});
+
 export {
   signupUser,
   verifyEmail,
@@ -172,5 +188,6 @@ export {
   findUsers,
   resetPassword,
   sendPasswordResetLink,
-  changeProfileVisibility
+  changeProfileVisibility,
+  changeNotificationStatus
 };
